@@ -1,0 +1,513 @@
+{
+  "productGroups": [
+    {
+      "id": "pg-prestige-mixer-iris",
+      "name": "Prestige Iris Mixer Grinder",
+      "slug": "prestige-iris-mixer-grinder",
+      "description": "The Prestige Iris Mixer Grinder is a powerful kitchen appliance designed to handle all your grinding and mixing needs. With its robust motor and high-quality stainless steel blades, it ensures smooth and efficient grinding every time.",
+      "categoryId": "cat-mixer-grinder",
+      "brandId": "brand-prestige",
+      "averageRating": 4.5,
+      "totalReviews": 128,
+      "isFeatured": true,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-bajaj-rex-mixer",
+      "name": "Bajaj Rex Mixer Grinder",
+      "slug": "bajaj-rex-mixer-grinder",
+      "description": "Bajaj Rex Mixer Grinder comes with a powerful motor and multiple jars for versatile kitchen operations. Perfect for Indian cooking needs.",
+      "categoryId": "cat-mixer-grinder",
+      "brandId": "brand-bajaj",
+      "averageRating": 4.2,
+      "totalReviews": 95,
+      "isFeatured": true,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-philips-mixer-hl7756",
+      "name": "Philips HL7756 Mixer Grinder",
+      "slug": "philips-hl7756-mixer-grinder",
+      "description": "Philips HL7756 features a powerful motor with unique blade design for efficient grinding. Comes with multiple jars for all your kitchen needs.",
+      "categoryId": "cat-mixer-grinder",
+      "brandId": "brand-philips",
+      "averageRating": 4.4,
+      "totalReviews": 76,
+      "isFeatured": false,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-prestige-deluxe-alpha",
+      "name": "Prestige Deluxe Alpha Pressure Cooker",
+      "slug": "prestige-deluxe-alpha-pressure-cooker",
+      "description": "The Prestige Deluxe Alpha is a stainless steel pressure cooker with induction base. Features a metallic safety plug and precision weight valve for safe cooking.",
+      "categoryId": "cat-pressure-cooker",
+      "brandId": "brand-prestige",
+      "averageRating": 4.7,
+      "totalReviews": 256,
+      "isFeatured": true,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-hawkins-contura",
+      "name": "Hawkins Contura Pressure Cooker",
+      "slug": "hawkins-contura-pressure-cooker",
+      "description": "Hawkins Contura features a unique curved body design that allows stirring while cooking. Made with hard anodized aluminum for durability.",
+      "categoryId": "cat-pressure-cooker",
+      "brandId": "brand-hawkins",
+      "averageRating": 4.6,
+      "totalReviews": 189,
+      "isFeatured": true,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-bajaj-majesty-fan",
+      "name": "Bajaj Majesty Ceiling Fan",
+      "slug": "bajaj-majesty-ceiling-fan",
+      "description": "Bajaj Majesty ceiling fan with powerful motor for high air delivery. Energy efficient with elegant design.",
+      "categoryId": "cat-fans",
+      "brandId": "brand-bajaj",
+      "averageRating": 4.3,
+      "totalReviews": 112,
+      "isFeatured": false,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-prestige-pnc-cooktop",
+      "name": "Prestige PIC Non-Stick Cookware Set",
+      "slug": "prestige-non-stick-cookware-set",
+      "description": "Complete non-stick cookware set from Prestige. Includes fry pan, kadhai, and tawa. Durable non-stick coating for healthy cooking.",
+      "categoryId": "cat-cookware",
+      "brandId": "brand-prestige",
+      "averageRating": 4.4,
+      "totalReviews": 87,
+      "isFeatured": false,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-philips-aqua-purifier",
+      "name": "Philips AquaSure Water Purifier",
+      "slug": "philips-aquasure-water-purifier",
+      "description": "Philips AquaSure water purifier with RO+UV+UF technology. Provides pure and safe drinking water for your family.",
+      "categoryId": "cat-water-purifier",
+      "brandId": "brand-philips",
+      "averageRating": 4.5,
+      "totalReviews": 143,
+      "isFeatured": true,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-bajaj-dx7-iron",
+      "name": "Bajaj DX7 Dry Iron",
+      "slug": "bajaj-dx7-dry-iron",
+      "description": "Bajaj DX7 dry iron with non-stick coated soleplate. Lightweight design with adjustable temperature control.",
+      "categoryId": "cat-iron",
+      "brandId": "brand-bajaj",
+      "averageRating": 4.1,
+      "totalReviews": 68,
+      "isFeatured": false,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-philips-steam-iron",
+      "name": "Philips Steam Iron GC1905",
+      "slug": "philips-steam-iron-gc1905",
+      "description": "Philips GC1905 steam iron with powerful steam output. Non-stick soleplate glides smoothly for effortless ironing.",
+      "categoryId": "cat-iron",
+      "brandId": "brand-philips",
+      "averageRating": 4.3,
+      "totalReviews": 92,
+      "isFeatured": false,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-milton-container-set",
+      "name": "Milton Container Set",
+      "slug": "milton-container-set",
+      "description": "Milton airtight container set for storing food items. BPA free plastic with secure locking lids.",
+      "categoryId": "cat-storage",
+      "brandId": "brand-milton",
+      "averageRating": 4.2,
+      "totalReviews": 54,
+      "isFeatured": false,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "pg-hawkins-triply-kadhai",
+      "name": "Hawkins Triply Stainless Steel Kadhai",
+      "slug": "hawkins-triply-kadhai",
+      "description": "Hawkins Triply kadhai with stainless steel construction. Works on gas, induction, and electric cooktops.",
+      "categoryId": "cat-cookware",
+      "brandId": "brand-hawkins",
+      "averageRating": 4.6,
+      "totalReviews": 78,
+      "isFeatured": false,
+      "status": "ACTIVE"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-prestige-iris-750w-3jar",
+      "productGroupId": "pg-prestige-mixer-iris",
+      "sku": "PRES-IRIS-750-3J",
+      "name": "750W - 3 Jar",
+      "mrp": 5995,
+      "sellingPrice": 4499,
+      "discountPercentage": 25,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Power": "750W",
+        "Jars": "3",
+        "Color": "White & Blue",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-prestige-iris-750w-4jar",
+      "productGroupId": "pg-prestige-mixer-iris",
+      "sku": "PRES-IRIS-750-4J",
+      "name": "750W - 4 Jar",
+      "mrp": 6995,
+      "sellingPrice": 5299,
+      "discountPercentage": 24,
+      "status": "ACTIVE",
+      "isDefaultVariant": false,
+      "attributes": {
+        "Power": "750W",
+        "Jars": "4",
+        "Color": "White & Blue",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-bajaj-rex-500w-3jar",
+      "productGroupId": "pg-bajaj-rex-mixer",
+      "sku": "BAJ-REX-500-3J",
+      "name": "500W - 3 Jar",
+      "mrp": 3995,
+      "sellingPrice": 2999,
+      "discountPercentage": 25,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Power": "500W",
+        "Jars": "3",
+        "Color": "White",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-bajaj-rex-750w-3jar",
+      "productGroupId": "pg-bajaj-rex-mixer",
+      "sku": "BAJ-REX-750-3J",
+      "name": "750W - 3 Jar",
+      "mrp": 4995,
+      "sellingPrice": 3799,
+      "discountPercentage": 24,
+      "status": "ACTIVE",
+      "isDefaultVariant": false,
+      "attributes": {
+        "Power": "750W",
+        "Jars": "3",
+        "Color": "White",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-philips-hl7756-750w-3jar",
+      "productGroupId": "pg-philips-mixer-hl7756",
+      "sku": "PHIL-7756-750-3J",
+      "name": "750W - 3 Jar",
+      "mrp": 5495,
+      "sellingPrice": 4199,
+      "discountPercentage": 24,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Power": "750W",
+        "Jars": "3",
+        "Color": "Black",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-philips-hl7756-750w-4jar",
+      "productGroupId": "pg-philips-mixer-hl7756",
+      "sku": "PHIL-7756-750-4J",
+      "name": "750W - 4 Jar",
+      "mrp": 6495,
+      "sellingPrice": 4999,
+      "discountPercentage": 23,
+      "status": "ACTIVE",
+      "isDefaultVariant": false,
+      "attributes": {
+        "Power": "750W",
+        "Jars": "4",
+        "Color": "Black",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-prestige-deluxe-2l",
+      "productGroupId": "pg-prestige-deluxe-alpha",
+      "sku": "PRES-DELUXE-2L",
+      "name": "2 Litre",
+      "mrp": 2495,
+      "sellingPrice": 1999,
+      "discountPercentage": 20,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Capacity": "2 Litre",
+        "Material": "Stainless Steel",
+        "Induction Base": "Yes",
+        "Warranty": "5 Years"
+      }
+    },
+    {
+      "id": "prod-prestige-deluxe-3l",
+      "productGroupId": "pg-prestige-deluxe-alpha",
+      "sku": "PRES-DELUXE-3L",
+      "name": "3 Litre",
+      "mrp": 2995,
+      "sellingPrice": 2499,
+      "discountPercentage": 17,
+      "status": "ACTIVE",
+      "isDefaultVariant": false,
+      "attributes": {
+        "Capacity": "3 Litre",
+        "Material": "Stainless Steel",
+        "Induction Base": "Yes",
+        "Warranty": "5 Years"
+      }
+    },
+    {
+      "id": "prod-prestige-deluxe-5l",
+      "productGroupId": "pg-prestige-deluxe-alpha",
+      "sku": "PRES-DELUXE-5L",
+      "name": "5 Litre",
+      "mrp": 3995,
+      "sellingPrice": 3299,
+      "discountPercentage": 17,
+      "status": "ACTIVE",
+      "isDefaultVariant": false,
+      "attributes": {
+        "Capacity": "5 Litre",
+        "Material": "Stainless Steel",
+        "Induction Base": "Yes",
+        "Warranty": "5 Years"
+      }
+    },
+    {
+      "id": "prod-hawkins-contura-3l",
+      "productGroupId": "pg-hawkins-contura",
+      "sku": "HAWK-CONT-3L",
+      "name": "3 Litre",
+      "mrp": 2795,
+      "sellingPrice": 2399,
+      "discountPercentage": 14,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Capacity": "3 Litre",
+        "Material": "Hard Anodized Aluminum",
+        "Induction Base": "No",
+        "Warranty": "5 Years"
+      }
+    },
+    {
+      "id": "prod-hawkins-contura-5l",
+      "productGroupId": "pg-hawkins-contura",
+      "sku": "HAWK-CONT-5L",
+      "name": "5 Litre",
+      "mrp": 3595,
+      "sellingPrice": 3099,
+      "discountPercentage": 14,
+      "status": "ACTIVE",
+      "isDefaultVariant": false,
+      "attributes": {
+        "Capacity": "5 Litre",
+        "Material": "Hard Anodized Aluminum",
+        "Induction Base": "No",
+        "Warranty": "5 Years"
+      }
+    },
+    {
+      "id": "prod-bajaj-majesty-1200mm",
+      "productGroupId": "pg-bajaj-majesty-fan",
+      "sku": "BAJ-MAJ-1200",
+      "name": "1200mm - Brown",
+      "mrp": 2495,
+      "sellingPrice": 1999,
+      "discountPercentage": 20,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Size": "1200mm",
+        "Color": "Brown",
+        "Sweep": "1200mm",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-bajaj-majesty-1200mm-white",
+      "productGroupId": "pg-bajaj-majesty-fan",
+      "sku": "BAJ-MAJ-1200-W",
+      "name": "1200mm - White",
+      "mrp": 2495,
+      "sellingPrice": 1999,
+      "discountPercentage": 20,
+      "status": "ACTIVE",
+      "isDefaultVariant": false,
+      "attributes": {
+        "Size": "1200mm",
+        "Color": "White",
+        "Sweep": "1200mm",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-prestige-cookware-3pc",
+      "productGroupId": "pg-prestige-pnc-cooktop",
+      "sku": "PRES-COOK-3PC",
+      "name": "3 Piece Set",
+      "mrp": 2995,
+      "sellingPrice": 2399,
+      "discountPercentage": 20,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Pieces": "3",
+        "Material": "Aluminum Non-Stick",
+        "Includes": "Fry Pan, Kadhai, Tawa",
+        "Warranty": "1 Year"
+      }
+    },
+    {
+      "id": "prod-prestige-cookware-5pc",
+      "productGroupId": "pg-prestige-pnc-cooktop",
+      "sku": "PRES-COOK-5PC",
+      "name": "5 Piece Set",
+      "mrp": 4495,
+      "sellingPrice": 3599,
+      "discountPercentage": 20,
+      "status": "ACTIVE",
+      "isDefaultVariant": false,
+      "attributes": {
+        "Pieces": "5",
+        "Material": "Aluminum Non-Stick",
+        "Includes": "2 Fry Pans, Kadhai, Tawa, Saucepan",
+        "Warranty": "1 Year"
+      }
+    },
+    {
+      "id": "prod-philips-aqua-15l",
+      "productGroupId": "pg-philips-aqua-purifier",
+      "sku": "PHIL-AQUA-15L",
+      "name": "15 Litre Tank",
+      "mrp": 18995,
+      "sellingPrice": 14999,
+      "discountPercentage": 21,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Capacity": "15 Litre",
+        "Technology": "RO + UV + UF",
+        "TDS": "Up to 2000 ppm",
+        "Warranty": "1 Year"
+      }
+    },
+    {
+      "id": "prod-bajaj-dx7-1000w",
+      "productGroupId": "pg-bajaj-dx7-iron",
+      "sku": "BAJ-DX7-1000",
+      "name": "1000W",
+      "mrp": 995,
+      "sellingPrice": 749,
+      "discountPercentage": 25,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Power": "1000W",
+        "Soleplate": "Non-Stick",
+        "Weight": "Light",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-philips-gc1905",
+      "productGroupId": "pg-philips-steam-iron",
+      "sku": "PHIL-GC1905",
+      "name": "1440W Steam Iron",
+      "mrp": 2495,
+      "sellingPrice": 1899,
+      "discountPercentage": 24,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Power": "1440W",
+        "Steam": "17g/min",
+        "Soleplate": "Non-Stick",
+        "Warranty": "2 Years"
+      }
+    },
+    {
+      "id": "prod-milton-container-6pc",
+      "productGroupId": "pg-milton-container-set",
+      "sku": "MILT-CONT-6PC",
+      "name": "6 Piece Set",
+      "mrp": 899,
+      "sellingPrice": 699,
+      "discountPercentage": 22,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Pieces": "6",
+        "Material": "BPA Free Plastic",
+        "Airtight": "Yes",
+        "Warranty": "6 Months"
+      }
+    },
+    {
+      "id": "prod-hawkins-kadhai-2l",
+      "productGroupId": "pg-hawkins-triply-kadhai",
+      "sku": "HAWK-TRIPLY-2L",
+      "name": "2 Litre",
+      "mrp": 2995,
+      "sellingPrice": 2499,
+      "discountPercentage": 17,
+      "status": "ACTIVE",
+      "isDefaultVariant": true,
+      "attributes": {
+        "Capacity": "2 Litre",
+        "Material": "Triply Stainless Steel",
+        "Induction Compatible": "Yes",
+        "Warranty": "Lifetime"
+      }
+    }
+  ],
+  "productImages": [
+    { "id": "img-1", "productId": "prod-prestige-iris-750w-3jar", "url": "/images/products/prestige-iris-3jar-1.jpg", "altText": "Prestige Iris 3 Jar Front View", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-2", "productId": "prod-prestige-iris-750w-3jar", "url": "/images/products/prestige-iris-3jar-2.jpg", "altText": "Prestige Iris 3 Jar Side View", "displayOrder": 2, "isPrimary": false },
+    { "id": "img-3", "productId": "prod-prestige-iris-750w-4jar", "url": "/images/products/prestige-iris-4jar-1.jpg", "altText": "Prestige Iris 4 Jar Front View", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-4", "productId": "prod-bajaj-rex-500w-3jar", "url": "/images/products/bajaj-rex-500w-1.jpg", "altText": "Bajaj Rex 500W Front View", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-5", "productId": "prod-bajaj-rex-750w-3jar", "url": "/images/products/bajaj-rex-750w-1.jpg", "altText": "Bajaj Rex 750W Front View", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-6", "productId": "prod-philips-hl7756-750w-3jar", "url": "/images/products/philips-7756-3jar-1.jpg", "altText": "Philips HL7756 3 Jar", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-7", "productId": "prod-philips-hl7756-750w-4jar", "url": "/images/products/philips-7756-4jar-1.jpg", "altText": "Philips HL7756 4 Jar", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-8", "productId": "prod-prestige-deluxe-2l", "url": "/images/products/prestige-deluxe-2l-1.jpg", "altText": "Prestige Deluxe 2L", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-9", "productId": "prod-prestige-deluxe-3l", "url": "/images/products/prestige-deluxe-3l-1.jpg", "altText": "Prestige Deluxe 3L", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-10", "productId": "prod-prestige-deluxe-5l", "url": "/images/products/prestige-deluxe-5l-1.jpg", "altText": "Prestige Deluxe 5L", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-11", "productId": "prod-hawkins-contura-3l", "url": "/images/products/hawkins-contura-3l-1.jpg", "altText": "Hawkins Contura 3L", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-12", "productId": "prod-hawkins-contura-5l", "url": "/images/products/hawkins-contura-5l-1.jpg", "altText": "Hawkins Contura 5L", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-13", "productId": "prod-bajaj-majesty-1200mm", "url": "/images/products/bajaj-majesty-brown-1.jpg", "altText": "Bajaj Majesty Brown", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-14", "productId": "prod-bajaj-majesty-1200mm-white", "url": "/images/products/bajaj-majesty-white-1.jpg", "altText": "Bajaj Majesty White", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-15", "productId": "prod-prestige-cookware-3pc", "url": "/images/products/prestige-cookware-3pc-1.jpg", "altText": "Prestige Cookware 3 Piece", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-16", "productId": "prod-prestige-cookware-5pc", "url": "/images/products/prestige-cookware-5pc-1.jpg", "altText": "Prestige Cookware 5 Piece", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-17", "productId": "prod-philips-aqua-15l", "url": "/images/products/philips-aquasure-1.jpg", "altText": "Philips AquaSure", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-18", "productId": "prod-bajaj-dx7-1000w", "url": "/images/products/bajaj-dx7-1.jpg", "altText": "Bajaj DX7 Iron", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-19", "productId": "prod-philips-gc1905", "url": "/images/products/philips-gc1905-1.jpg", "altText": "Philips GC1905 Steam Iron", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-20", "productId": "prod-milton-container-6pc", "url": "/images/products/milton-container-6pc-1.jpg", "altText": "Milton Container Set", "displayOrder": 1, "isPrimary": true },
+    { "id": "img-21", "productId": "prod-hawkins-kadhai-2l", "url": "/images/products/hawkins-kadhai-1.jpg", "altText": "Hawkins Triply Kadhai", "displayOrder": 1, "isPrimary": true }
+  ]
+}

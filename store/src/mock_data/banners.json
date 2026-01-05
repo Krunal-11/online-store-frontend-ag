@@ -1,0 +1,32 @@
+[
+  {
+    "id": "banner-1",
+    "title": "Wide Range of Home Appliances",
+    "imageUrlDesktop": "/images/banners/banner1-desktop.jpg",
+    "imageUrlMobile": "/images/banners/banner1-mobile.jpg",
+    "linkType": "CATEGORY",
+    "linkValue": "electronics",
+    "displayOrder": 1,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "banner-2",
+    "title": "Kitchen Essentials Sale",
+    "imageUrlDesktop": "/images/banners/banner2-desktop.jpg",
+    "imageUrlMobile": "/images/banners/banner2-mobile.jpg",
+    "linkType": "CATEGORY",
+    "linkValue": "kitchen-essentials",
+    "displayOrder": 2,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "banner-3",
+    "title": "Prestige Products",
+    "imageUrlDesktop": "/images/banners/banner3-desktop.jpg",
+    "imageUrlMobile": "/images/banners/banner3-mobile.jpg",
+    "linkType": "BRAND",
+    "linkValue": "prestige",
+    "displayOrder": 3,
+    "status": "ACTIVE"
+  }
+]

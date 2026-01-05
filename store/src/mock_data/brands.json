@@ -1,0 +1,47 @@
+[
+  {
+    "id": "brand-prestige",
+    "name": "Prestige",
+    "slug": "prestige",
+    "logoUrl": "/images/brands/prestige.png",
+    "description": "India's most trusted kitchen appliance brand",
+    "status": "ACTIVE",
+    "productCount": 6
+  },
+  {
+    "id": "brand-bajaj",
+    "name": "Bajaj",
+    "slug": "bajaj",
+    "logoUrl": "/images/brands/bajaj.png",
+    "description": "Quality home appliances since 1938",
+    "status": "ACTIVE",
+    "productCount": 4
+  },
+  {
+    "id": "brand-philips",
+    "name": "Philips",
+    "slug": "philips",
+    "logoUrl": "/images/brands/philips.png",
+    "description": "Innovation and quality you can trust",
+    "status": "ACTIVE",
+    "productCount": 4
+  },
+  {
+    "id": "brand-hawkins",
+    "name": "Hawkins",
+    "slug": "hawkins",
+    "logoUrl": "/images/brands/hawkins.png",
+    "description": "The pressure cooker experts",
+    "status": "ACTIVE",
+    "productCount": 3
+  },
+  {
+    "id": "brand-milton",
+    "name": "Milton",
+    "slug": "milton",
+    "logoUrl": "/images/brands/milton.png",
+    "description": "Quality storage and kitchen products",
+    "status": "ACTIVE",
+    "productCount": 3
+  }
+]

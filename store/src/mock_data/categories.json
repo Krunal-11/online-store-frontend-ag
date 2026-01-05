@@ -1,0 +1,179 @@
+[
+  {
+    "id": "cat-electronics",
+    "name": "Electronics",
+    "slug": "electronics",
+    "description": "Home electronics and appliances",
+    "imageUrl": "/images/categories/electronics.jpg",
+    "parentId": null,
+    "level": 0,
+    "path": "electronics",
+    "displayOrder": 1,
+    "status": "ACTIVE",
+    "productCount": 8,
+    "children": [
+      {
+        "id": "cat-mixer-grinder",
+        "name": "Mixer Grinder",
+        "slug": "mixer-grinder",
+        "description": "High-quality mixer grinders for your kitchen",
+        "imageUrl": "/images/categories/mixer-grinder.jpg",
+        "parentId": "cat-electronics",
+        "level": 1,
+        "path": "electronics/mixer-grinder",
+        "displayOrder": 1,
+        "status": "ACTIVE",
+        "productCount": 4,
+        "children": [
+          {
+            "id": "cat-mixer-3jar",
+            "name": "3 Jar",
+            "slug": "3-jar",
+            "description": "Mixer grinders with 3 jars",
+            "imageUrl": "/images/categories/mixer-3jar.jpg",
+            "parentId": "cat-mixer-grinder",
+            "level": 2,
+            "path": "electronics/mixer-grinder/3-jar",
+            "displayOrder": 1,
+            "status": "ACTIVE",
+            "productCount": 2
+          },
+          {
+            "id": "cat-mixer-4jar",
+            "name": "4 Jar",
+            "slug": "4-jar",
+            "description": "Mixer grinders with 4 jars",
+            "imageUrl": "/images/categories/mixer-4jar.jpg",
+            "parentId": "cat-mixer-grinder",
+            "level": 2,
+            "path": "electronics/mixer-grinder/4-jar",
+            "displayOrder": 2,
+            "status": "ACTIVE",
+            "productCount": 2
+          }
+        ]
+      },
+      {
+        "id": "cat-fans",
+        "name": "Fans",
+        "slug": "fans",
+        "description": "Ceiling and table fans",
+        "imageUrl": "/images/categories/fans.jpg",
+        "parentId": "cat-electronics",
+        "level": 1,
+        "path": "electronics/fans",
+        "displayOrder": 2,
+        "status": "ACTIVE",
+        "productCount": 4
+      }
+    ]
+  },
+  {
+    "id": "cat-kitchen",
+    "name": "Kitchen Essentials",
+    "slug": "kitchen-essentials",
+    "description": "Essential kitchenware and cookware",
+    "imageUrl": "/images/categories/kitchen.jpg",
+    "parentId": null,
+    "level": 0,
+    "path": "kitchen-essentials",
+    "displayOrder": 2,
+    "status": "ACTIVE",
+    "productCount": 6,
+    "children": [
+      {
+        "id": "cat-pressure-cooker",
+        "name": "Pressure Cooker",
+        "slug": "pressure-cooker",
+        "description": "Quality pressure cookers",
+        "imageUrl": "/images/categories/pressure-cooker.jpg",
+        "parentId": "cat-kitchen",
+        "level": 1,
+        "path": "kitchen-essentials/pressure-cooker",
+        "displayOrder": 1,
+        "status": "ACTIVE",
+        "productCount": 3
+      },
+      {
+        "id": "cat-cookware",
+        "name": "Cookware",
+        "slug": "cookware",
+        "description": "Pots, pans and cooking essentials",
+        "imageUrl": "/images/categories/cookware.jpg",
+        "parentId": "cat-kitchen",
+        "level": 1,
+        "path": "kitchen-essentials/cookware",
+        "displayOrder": 2,
+        "status": "ACTIVE",
+        "productCount": 3
+      }
+    ]
+  },
+  {
+    "id": "cat-home-appliances",
+    "name": "Home Appliances",
+    "slug": "home-appliances",
+    "description": "Essential home appliances",
+    "imageUrl": "/images/categories/home-appliances.jpg",
+    "parentId": null,
+    "level": 0,
+    "path": "home-appliances",
+    "displayOrder": 3,
+    "status": "ACTIVE",
+    "productCount": 4,
+    "children": [
+      {
+        "id": "cat-water-purifier",
+        "name": "Water Purifier",
+        "slug": "water-purifier",
+        "description": "RO and UV water purifiers",
+        "imageUrl": "/images/categories/water-purifier.jpg",
+        "parentId": "cat-home-appliances",
+        "level": 1,
+        "path": "home-appliances/water-purifier",
+        "displayOrder": 1,
+        "status": "ACTIVE",
+        "productCount": 2
+      },
+      {
+        "id": "cat-iron",
+        "name": "Iron",
+        "slug": "iron",
+        "description": "Steam and dry irons",
+        "imageUrl": "/images/categories/iron.jpg",
+        "parentId": "cat-home-appliances",
+        "level": 1,
+        "path": "home-appliances/iron",
+        "displayOrder": 2,
+        "status": "ACTIVE",
+        "productCount": 2
+      }
+    ]
+  },
+  {
+    "id": "cat-storage",
+    "name": "Storage & Organization",
+    "slug": "storage-organization",
+    "description": "Storage containers and organizers",
+    "imageUrl": "/images/categories/storage.jpg",
+    "parentId": null,
+    "level": 0,
+    "path": "storage-organization",
+    "displayOrder": 4,
+    "status": "ACTIVE",
+    "productCount": 2
+  },
+  {
+    "id": "cat-dining",
+    "name": "Dining & Serve",
+    "slug": "dining-serve",
+    "description": "Dinnerware and serving items",
+    "imageUrl": "/images/categories/dining.jpg",
+    "parentId": null,
+    "level": 0,
+    "path": "dining-serve",
+    "displayOrder": 5,
+    "status": "ACTIVE",
+    "productCount": 0
+  }
+]

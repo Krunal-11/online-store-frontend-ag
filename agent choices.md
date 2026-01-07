@@ -122,7 +122,32 @@ font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
 - Carousel, Skeleton, Separator, Label, Textarea, Select, Checkbox
 
 ### Custom Component Conventions
-*(To be documented as components are built)*
+
+#### Layout Components (Step 3)
+| Component | Purpose | Location |
+|-----------|---------|----------|
+| `Header` | Main navigation with search, logo, user menu | `components/layout/Header.tsx` |
+| `Footer` | Store info, contact, quick links | `components/layout/Footer.tsx` |
+| `MobileNav` | Slide-out drawer for mobile navigation | `components/layout/MobileNav.tsx` |
+| `MainLayout` | Wraps user pages with Header + Footer | `components/layout/MainLayout.tsx` |
+
+#### Header Design Decisions
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Sticky Header | Yes | Easy access to search/nav while scrolling |
+| Mobile Layout | Two-row | Row 1: menu, logo, icons. Row 2: full-width search |
+| Category Menu | Not in header | Categories shown on homepage only (Phase 1) |
+| Shadow on Scroll | Yes | Visual feedback that content scrolls behind |
+| Announcement Bar | No | Not needed for Phase 1 |
+| WhatsApp Button | No | Not needed for Phase 1 |
+
+#### Mobile Navigation Features
+- Opens from left side (Sheet component)
+- Shows user profile section (login status)
+- Lists main categories with navigation
+- Quick links: Home, Wishlist, Profile, Orders
+- Admin link visible for admin users
+- Store contact info at bottom
 
 ---
 
@@ -161,4 +186,4 @@ store/src/
 
 ---
 
-*Last Updated: 2025-01-05 (Step 2: Design System)*
+*Last Updated: 2025-01-05 (Step 3: Layout Components)*

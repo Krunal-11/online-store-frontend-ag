@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/context";
+import { MainLayout } from "@/components/layout";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "New Guru Enterprises",
@@ -14,7 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased font-sans">
-        {children}
+        <AuthProvider>
+          <MainLayout>
+            {children}
+          </MainLayout>
+          <Toaster position="top-right" richColors />
+        </AuthProvider>
       </body>
     </html>
   );

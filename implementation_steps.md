@@ -10,7 +10,7 @@ This document tracks the implementation progress of the New Guru Enterprises onl
 
 1. ✅ Project Setup and Configuration
 2. ✅ Design System and Theme Setup
-3. ⬜ Layout Components (Header, Footer, Mobile Navigation)
+3. ✅ Layout Components (Header, Footer, Mobile Navigation)
 4. ⬜ Mock Data and API Routes
 5. ⬜ Homepage Implementation
 6. ⬜ Category Navigation and Pages
@@ -103,4 +103,59 @@ store/src/
 | Accent | #F59E0B | `bg-accent`, `text-accent` |
 | Success | #22C55E | `bg-success`, `text-success` |
 | Destructive | #EF4444 | `bg-destructive` |
+
+---
+
+### Step 3: Layout Components (Header, Footer, Mobile Navigation) ✅
+**Completed**: 2025-01-05
+
+**What was created**:
+
+**Components Created** (`store/src/components/layout/`):
+1. **Header.tsx** - Main navigation header
+   - Sticky header with shadow on scroll
+   - Desktop: Single row (logo, search, icons)
+   - Mobile: Two rows (menu+logo+icons, search bar)
+   - Integrated with AuthContext for user state
+   - Wishlist count badge from useWishlist hook
+   - User dropdown menu with profile/logout options
+   - Admin panel link for admin users
+
+2. **MobileNav.tsx** - Mobile slide-out drawer
+   - Opens from left using Sheet component
+   - User profile section (login status)
+   - Main categories list with navigation
+   - Quick links: Home, Wishlist, Profile, Orders
+   - Admin link for admin users
+   - Store contact info footer
+
+3. **Footer.tsx** - Page footer
+   - Store name and tagline
+   - "Home Delivery Available" badge
+   - Contact info (phone, address)
+   - Quick links section
+   - Copyright line
+
+4. **MainLayout.tsx** - Layout wrapper
+   - Wraps pages with Header + Footer
+   - Flex layout for sticky footer
+
+5. **index.ts** - Barrel export file
+
+**Files Modified**:
+- `store/src/app/layout.tsx` - Added AuthProvider, MainLayout, Toaster
+- `store/src/app/page.tsx` - Updated with placeholder homepage content
+
+**Key Design Decisions**:
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Header Position | Sticky | Easy access while scrolling |
+| Mobile Header | Two-row | Full logo + full-width search |
+| Category Menu | Not in header | Simpler, categories on homepage |
+| Shadow on Scroll | Yes | Visual feedback for scrolling |
+| Mobile Nav | Sheet from left | Natural thumb reach |
+
+**Header Heights**:
+- Desktop: 64px (single row)
+- Mobile: ~110px (two rows: 56px + search row)
 

@@ -52,12 +52,16 @@ export interface ProductListItem {
   name: string;
   slug: string;
   brandName: string;
+  categoryId?: string;
+  categoryName?: string;
   mrp: number;
   sellingPrice: number;
   discountPercentage: number;
   averageRating: number;
   totalReviews: number;
   primaryImage: string;
+  isFeatured?: boolean;
+  variantCount?: number;
 }
 
 // Category Types

@@ -11,7 +11,7 @@ This document tracks the implementation progress of the New Guru Enterprises onl
 1. ✅ Project Setup and Configuration
 2. ✅ Design System and Theme Setup
 3. ✅ Layout Components (Header, Footer, Mobile Navigation)
-4. ⬜ Mock Data and API Routes
+4. ✅ Mock Data and API Routes
 5. ⬜ Homepage Implementation
 6. ⬜ Category Navigation and Pages
 7. ⬜ Product Grid Component
@@ -159,3 +159,60 @@ store/src/
 - Desktop: 64px (single row)
 - Mobile: ~110px (two rows: 56px + search row)
 
+---
+
+### Step 4: Mock Data and API Routes ✅
+**Completed**: 2026-01-07
+
+**What was created**:
+
+**Utility File** (`store/src/lib/mock-helpers.ts`):
+- `delay(ms)` - Artificial 200ms delay for realistic loading states
+- `generateToken(userId)` / `verifyToken(token)` - Mock JWT token handling
+- `getPlaceholderImage(text, w, h)` - Generate placeholder.co URLs
+- `successResponse()` / `errorResponse()` - Standard API response helpers
+- `paginate()` - Pagination utility for list endpoints
+
+**API Routes Created** (`store/src/app/api/`):
+
+| Route | Method | Purpose |
+|-------|--------|---------|
+| `/api/auth/send-otp` | POST | Mock OTP sending (always succeeds, logs to console) |
+| `/api/auth/verify-otp` | POST | Accept any 6-digit OTP, return fixed mock user + token |
+| `/api/auth/me` | GET | Get current user from token |
+| `/api/auth/logout` | POST | Logout (frontend clears token) |
+| `/api/categories` | GET | Get all categories (hierarchical tree) |
+| `/api/categories/[slug]` | GET | Single category with subcategories + breadcrumb |
+| `/api/products` | GET | List products with search, filters, pagination |
+| `/api/products/[slug]` | GET | Product details with all variants |
+| `/api/brands` | GET | List all brands |
+| `/api/banners` | GET | Active homepage banners |
+| `/api/wishlist` | GET/POST/DELETE | Wishlist operations (in-memory storage) |
+
+**Key Implementation Decisions**:
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Auth Mock | Fixed user for all logins | Simpler for Phase 1; real logic in Spring Boot later |
+| Images | Placeholder URLs via placehold.co | App looks complete during development |
+| API Delay | 200ms artificial delay | Test loading states realistically |
+| Wishlist Storage | In-memory Map | Resets on restart; real DB in Phase 2 |
+| Product Response | ProductGroups + Variants merged | Clean API for frontend consumption |
+
+**Files Modified**:
+- `store/src/types/index.ts` - Added optional fields to ProductListItem
+
+**How to Test**:
+```bash
+cd store
+npm run dev
+# Then open browser console and test:
+# fetch('/api/categories').then(r => r.json()).then(console.log)
+# fetch('/api/products').then(r => r.json()).then(console.log)
+# fetch('/api/products?search=prestige').then(r => r.json()).then(console.log)
+```
+
+**Notes**:
+- All existing hooks (`useProducts`, `useCategories`, etc.) now have working endpoints
+- Admin APIs will be implemented in Steps 12-16
+- When switching to Spring Boot backend, change `NEXT_PUBLIC_API_URL` environment variable

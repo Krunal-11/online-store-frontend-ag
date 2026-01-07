@@ -170,9 +170,36 @@ store/src/
 
 ---
 
-## 4. API CONVENTIONS (To be updated)
+## 4. API CONVENTIONS
 
-*(Documented as API routes are implemented)*
+### Response Format
+All API endpoints follow a consistent response structure:
+
+**Success Response:**
+```json
+{ "success": true, "data": {...} }
+```
+
+**Paginated Response:**
+```json
+{ 
+  "success": true, 
+  "data": [...],
+  "pagination": { "currentPage", "totalPages", "totalItems", "hasNextPage", "hasPreviousPage" }
+}
+```
+
+**Error Response:**
+```json
+{ "success": false, "error": "ERROR_CODE", "message": "Human-readable message" }
+```
+
+### Product Data Structure
+Products use a two-level structure that gets flattened for list views:
+- **ProductGroup**: Parent entity (name, description, brand, category, rating)
+- **Product/Variant**: Child entity (SKU, prices, attributes like size/color)
+
+List endpoints return `ProductListItem` (merged view), detail endpoints return full structure with all variants.
 
 ---
 

@@ -13,7 +13,7 @@ This document tracks the implementation progress of the New Guru Enterprises onl
 3. ✅ Layout Components (Header, Footer, Mobile Navigation)
 4. ✅ Mock Data and API Routes
 5. ✅ Homepage Implementation
-6. ⬜ Category Navigation and Pages
+6. ✅ Category Navigation and Pages
 7. ⬜ Product Grid Component
 8. ⬜ Product Detail Page
 9. ⬜ Authentication System (Phone OTP Mock)
@@ -282,3 +282,68 @@ npm run dev
 
 **Dependencies Added**:
 - `embla-carousel-autoplay` - For banner autoplay functionality
+
+---
+
+### Step 6: Category Navigation and Pages ✅
+**Completed**: 2026-01-20
+
+**What was created**:
+
+**Components Created**:
+1. **Breadcrumb.tsx** (`store/src/components/common/`)
+   - Simple text breadcrumb with chevron separators
+   - Clickable links for navigation
+   - Last item shown as non-clickable current page
+
+2. **CategoryGrid.tsx** (Modified - `store/src/components/home/`)
+   - Added drill-down functionality for subcategories
+   - Click category with subcategories → Shows subcategories in same section
+   - Click category without subcategories → Navigates to products page
+   - Back button to return to parent/main categories
+   - "View All Products in {Category}" button
+
+**Pages Created**:
+1. **Category Products Page** (`store/src/app/category/[slug]/products/page.tsx`)
+   - Breadcrumb navigation at top
+   - Category title with product count
+   - Infinite scroll product grid
+   - Empty state for categories with no products
+   - Loading skeleton during initial load
+
+**Hooks Created**:
+1. **useInfiniteProducts.ts** (`store/src/hooks/`)
+   - SWR Infinite for paginated product fetching
+   - Intersection Observer for automatic loading
+   - Configurable page size via environment variable
+   - Returns products, loading states, hasMore, loadMore
+
+**Files Modified**:
+- `store/.env.local` - Added `NEXT_PUBLIC_PRODUCTS_PER_PAGE=30`
+- `store/src/hooks/useCategories.ts` - Updated `useCategory` to return subcategories + breadcrumb
+- `store/src/hooks/index.ts` - Export new hook
+
+**Key Implementation Decisions**:
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Category Drill-down | Nested below main grid | Main categories always visible, subcategories appear below |
+| Selected Indicator | Teal border + light background (Option E) | Clear visual cue, matches design theme |
+| Collapse Behavior | Click same category to collapse | Intuitive toggle behavior |
+| Nesting Depth | 3 levels max (0, 1, 2) | Fixed depth, simple state management |
+| Products Page | Separate route `/category/[slug]/products` | Clean URL, proper page for product listings |
+| Infinite Scroll | Intersection Observer with 200px margin | Loads before user reaches end, smooth UX |
+| Pagination Config | Environment variable | Easy to change globally |
+| Empty State | Dedicated component | Good UX, clear messaging |
+
+**URL Structure**:
+- Category products: `/category/{slug}/products`
+- Flat slug-only (not nested paths)
+
+**Flow**:
+1. Homepage → Browse by Category grid (Level 0 always visible)
+2. Click category WITH subcategories → Level 1 subcategories appear below with "View All" button
+3. Click Level 1 WITH subcategories → Level 2 subcategories appear below
+4. Click same category again → Collapse that level
+5. Click category WITHOUT subcategories → Navigate to `/category/{slug}/products`
+6. Products page → Breadcrumb, title, infinite scroll grid

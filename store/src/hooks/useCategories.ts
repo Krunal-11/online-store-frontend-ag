@@ -1,8 +1,16 @@
 import useSWR from 'swr';
 import api from '@/lib/api';
 import type { Category, ApiResponse } from '@/types';
+import type { BreadcrumbItem } from '@/components/common';
 
 const fetcher = (url: string) => api.get(url).then((res) => res.data);
+
+// Response type for single category endpoint
+interface CategoryDetailResponse {
+  data: Category;
+  subcategories: Category[];
+  breadcrumb: BreadcrumbItem[];
+}
 
 // Hook for fetching all categories (hierarchical tree)
 export function useCategories() {
@@ -20,15 +28,17 @@ export function useCategories() {
   };
 }
 
-// Hook for fetching single category with children
+// Hook for fetching single category with subcategories and breadcrumb
 export function useCategory(slugOrId: string | undefined) {
-  const { data, error, isLoading, mutate } = useSWR<ApiResponse<Category & { children: Category[] }>>(
+  const { data, error, isLoading, mutate } = useSWR<CategoryDetailResponse>(
     slugOrId ? `/categories/${slugOrId}` : null,
     fetcher
   );
 
   return {
     category: data?.data,
+    subcategories: data?.subcategories ?? [],
+    breadcrumb: data?.breadcrumb ?? [],
     isLoading,
     isError: !!error,
     error,

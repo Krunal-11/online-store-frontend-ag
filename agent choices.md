@@ -174,6 +174,42 @@ font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
 | Categories | 2 | 3 | 4 | 6 |
 | Products | 2 | 2 | 3 | 4 |
 
+#### Category Navigation (Step 6)
+| Component | Purpose | Location |
+|-----------|---------|----------|
+| `Breadcrumb` | Navigation trail with clickable links | `components/common/Breadcrumb.tsx` |
+| `CategoryGrid` | Homepage category grid with nested drill-down | `components/home/CategoryGrid.tsx` |
+
+#### Category Drill-Down Behavior
+| Action | Result |
+|--------|--------|
+| Click category WITH subcategories | Subcategories appear **below** main grid (nested) |
+| Click same category again | Collapse the subcategories section |
+| Click different category | Switch to new category's subcategories |
+| Click category WITHOUT subcategories | Navigate to `/category/{slug}/products` |
+| Click "View All Products" button | Navigate to `/category/{slug}/products` |
+
+#### Category Selected State (Option E)
+| State | Visual Styling |
+|-------|----------------|
+| Selected | `bg-primary/10 ring-2 ring-primary` - light teal background + teal border |
+| Has children indicator | Chevron icon (▼) rotates 180° when expanded |
+| Hover (unselected) | `hover:bg-gray-50` with text color change |
+
+#### Nesting Levels
+| Level | Behavior |
+|-------|----------|
+| Level 0 (Main) | Always visible, expandable |
+| Level 1 (Sub) | Shown below Level 0 when parent expanded |
+| Level 2 (Sub-sub) | Shown below Level 1, always navigates to products |
+
+#### Infinite Scroll Configuration
+| Setting | Value | Location |
+|---------|-------|----------|
+| Products per page | 30 | `NEXT_PUBLIC_PRODUCTS_PER_PAGE` in `.env.local` |
+| Load trigger | 200px before end | Intersection Observer rootMargin |
+| Implementation | SWR Infinite | `useInfiniteProducts` hook |
+
 ---
 
 ## 3. FILE STRUCTURE CONVENTIONS
@@ -181,11 +217,12 @@ font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
 ```
 store/src/
 ├── app/              # Pages (App Router)
+│   └── category/[slug]/products/  # Category products page
 ├── components/       
 │   ├── ui/          # shadcn/ui components (auto-generated)
 │   ├── layout/      # Header, Footer, Nav (Step 3)
-│   ├── product/     # ProductCard, ProductGrid, etc.
-│   └── common/      # Breadcrumb, Rating, etc.
+│   ├── home/        # Homepage components (Step 5)
+│   └── common/      # Breadcrumb, shared components (Step 6)
 ├── context/         # React Context (Auth, etc.)
 ├── hooks/           # Custom hooks
 ├── lib/             # Utilities (api.ts, utils.ts)
@@ -238,4 +275,4 @@ List endpoints return `ProductListItem` (merged view), detail endpoints return f
 
 ---
 
-*Last Updated: 2026-01-14 (Step 5: Homepage Implementation)*
+*Last Updated: 2026-01-20 (Step 6: Category Navigation and Pages)*

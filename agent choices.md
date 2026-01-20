@@ -149,6 +149,31 @@ font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
 - Admin link visible for admin users
 - Store contact info at bottom
 
+#### Home Components (Step 5)
+| Component | Purpose | Location |
+|-----------|---------|----------|
+| `HeroBanner` | Autoplay carousel with banners | `components/home/HeroBanner.tsx` |
+| `CategoryGrid` | Grid of category cards | `components/home/CategoryGrid.tsx` |
+| `ProductCard` | Reusable product tile | `components/home/ProductCard.tsx` |
+| `FeaturedProducts` | Grid of featured products | `components/home/FeaturedProducts.tsx` |
+| `StoreInfo` | Store contact and info section | `components/home/StoreInfo.tsx` |
+
+#### ProductCard Design Decisions
+| Element | Styling |
+|---------|--------|
+| Discount Badge | Top-left, amber background |
+| Wishlist Button | Top-right, heart icon, toggles |
+| Brand Name | Uppercase, small, gray |
+| Product Title | 2-line clamp, hover changes color |
+| Rating | Star icon + number + review count |
+| Price | Selling price bold, MRP strikethrough |
+
+#### Responsive Grid Columns
+| Component | xs (default) | sm (640px) | md (768px) | lg (1024px) |
+|-----------|--------------|------------|------------|-------------|
+| Categories | 2 | 3 | 4 | 6 |
+| Products | 2 | 2 | 3 | 4 |
+
 ---
 
 ## 3. FILE STRUCTURE CONVENTIONS
@@ -213,4 +238,4 @@ List endpoints return `ProductListItem` (merged view), detail endpoints return f
 
 ---
 
-*Last Updated: 2025-01-05 (Step 3: Layout Components)*
+*Last Updated: 2026-01-14 (Step 5: Homepage Implementation)*

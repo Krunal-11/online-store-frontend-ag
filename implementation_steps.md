@@ -12,7 +12,7 @@ This document tracks the implementation progress of the New Guru Enterprises onl
 2. ✅ Design System and Theme Setup
 3. ✅ Layout Components (Header, Footer, Mobile Navigation)
 4. ✅ Mock Data and API Routes
-5. ⬜ Homepage Implementation
+5. ✅ Homepage Implementation
 6. ⬜ Category Navigation and Pages
 7. ⬜ Product Grid Component
 8. ⬜ Product Detail Page
@@ -216,3 +216,69 @@ npm run dev
 - All existing hooks (`useProducts`, `useCategories`, etc.) now have working endpoints
 - Admin APIs will be implemented in Steps 12-16
 - When switching to Spring Boot backend, change `NEXT_PUBLIC_API_URL` environment variable
+
+---
+
+### Step 5: Homepage Implementation ✅
+**Completed**: 2026-01-14
+
+**What was created**:
+
+**Components Created** (`store/src/components/home/`):
+1. **HeroBanner.tsx** - Hero carousel
+   - Uses embla-carousel with autoplay plugin (5s interval)
+   - Arrow navigation (desktop, visible on hover)
+   - Dot indicators with click navigation
+   - Responsive images: separate desktop/mobile versions
+   - Skeleton loader during fetch
+
+2. **CategoryGrid.tsx** - Category browsing section
+   - Simple cards: image + name only
+   - Responsive grid: 2→3→4→6 columns
+   - Skeleton loaders for loading state
+   - Links to /category/[slug]
+
+3. **ProductCard.tsx** - Reusable product tile
+   - Product image with hover zoom
+   - Brand name, product title (2-line clamp)
+   - Star rating with review count
+   - Selling price + MRP strikethrough
+   - Discount badge (amber)
+   - Wishlist heart button (functional)
+
+4. **FeaturedProducts.tsx** - Featured products section
+   - Uses ProductCard in responsive grid
+   - Grid: 2→3→4 columns
+   - Skeleton loaders for loading state
+
+5. **StoreInfo.tsx** - Store information section
+   - Store name and tagline
+   - "Home Delivery Available" badge
+   - Clickable phone number
+   - Address display
+
+**New Hooks Created** (`store/src/hooks/`):
+- `useBanners.ts` - Fetches active banners from /api/banners
+- `useFeaturedProducts.ts` - Fetches featured products with limit param
+
+**Key Implementation Decisions**:
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Banner Autoplay | 5s with embla-carousel-autoplay | Simple integration, no pause-on-hover |
+| Category Cards | Image + Name only | Clean, simple design per user request |
+| Featured Products | Separate section below categories | Shows both categories AND products |
+| Responsive Banners | Separate desktop/mobile images | Optimal aspect ratios for each device |
+| Skeleton Loaders | Included | Simple to implement, better UX |
+| Price Format | INR with Intl.NumberFormat | Proper Indian currency formatting |
+
+**Responsive Breakpoints**:
+
+| Component | Mobile (<640px) | Tablet (md) | Desktop (lg+) |
+|-----------|-----------------|-------------|---------------|
+| Hero Banner | 16:9 aspect, swipe | 21:7 aspect | 21:7 + arrows |
+| Category Grid | 2 cols | 3-4 cols | 6 cols |
+| Products Grid | 2 cols | 3 cols | 4 cols |
+
+**Dependencies Added**:
+- `embla-carousel-autoplay` - For banner autoplay functionality

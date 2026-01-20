@@ -17,6 +17,6 @@ Context:
 Task:
 Plan **Step ${input:step:number:Which step number do you want to plan?}** of the implementation.
 
-I want you to ask me whatever questions you have about the implementation of **Step ${input:step:number:Which step number do you want to plan?}** , once go through the details of whats implemented and what has to implemented and based on that ask whatever questions you have and once you are clear you will give me a short implementation plan which once I approve you will implement to acheive
+I want you to ask me whatever questions along with suggestions you have about the implementation of **Step ${input:step:number:Which step number do you want to plan?}** , once go through the details of whats implemented and what has to implemented and based on that ask whatever questions you have and once you are clear you will give me a short implementation plan which once I approve you will implement to acheive
 **Step ${input:step:number:Which step number do you want to plan?}** implementation
 

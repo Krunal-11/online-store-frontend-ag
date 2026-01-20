@@ -16,7 +16,7 @@ interface ProductCardProps {
 }
 
 // Format price in Indian Rupee format
-const formatPrice = (price: number): string => {
+export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',

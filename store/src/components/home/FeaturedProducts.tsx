@@ -1,7 +1,7 @@
 'use client';
 
 import { useFeaturedProducts } from '@/hooks';
-import { ProductCard, ProductCardSkeleton } from './ProductCard';
+import { ProductCard, ProductCardSkeleton } from '@/components/products';
 
 // Products grid skeleton
 function ProductsGridSkeleton() {

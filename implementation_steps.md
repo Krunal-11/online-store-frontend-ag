@@ -14,7 +14,7 @@ This document tracks the implementation progress of the New Guru Enterprises onl
 4. ✅ Mock Data and API Routes
 5. ✅ Homepage Implementation
 6. ✅ Category Navigation and Pages
-7. ⬜ Product Grid Component
+7. ✅ Product Grid Component
 8. ⬜ Product Detail Page
 9. ⬜ Authentication System (Phone OTP Mock)
 10. ⬜ Wishlist Functionality
@@ -347,3 +347,114 @@ npm run dev
 4. Click same category again → Collapse that level
 5. Click category WITHOUT subcategories → Navigate to `/category/{slug}/products`
 6. Products page → Breadcrumb, title, infinite scroll grid
+
+---
+
+### Step 7: Product Grid Component ✅
+**Completed**: 2026-01-20
+
+**What was created**:
+
+**Component Architecture** (`store/src/components/products/`):
+1. **ProductCard.tsx** - Moved from `home/` folder
+   - Reusable product tile component
+   - Wishlist toggle functionality
+   - Discount badge, rating, pricing display
+   - Exported `formatPrice` utility
+
+2. **ProductGrid.tsx** - Main reusable grid component
+   - Fetches products using `useInfiniteProducts` hook
+   - Integrates sort/filter controls
+   - Supports URL-based state (shareable links)
+   - Infinite scroll with Intersection Observer
+   - Accepts `header` prop for custom page headers
+   - Configurable: `showControls`, `showBrandFilter`, custom empty states
+
+3. **ProductGridControls.tsx** - Sort/filter bar
+   - Sticky header on scroll (below main header)
+   - Sort dropdown: Relevance, Price (Low/High), Rating, Discount, Newest
+   - Brand filter dropdown (when applicable)
+   - Product count display
+   - "Clear filters" button when filters active
+
+4. **ProductGridSkeleton.tsx** - Loading skeleton for grid
+   - Configurable count of skeleton cards
+   - Uses ProductCardSkeleton
+
+5. **ProductEmptyState.tsx** - Empty state component
+   - Customizable title and message
+   - Optional home button
+   - Search-specific icon variant
+
+6. **index.ts** - Barrel exports
+
+**API Updates** (`store/src/app/api/products/route.ts`):
+- Added sorting support with `sort` query parameter
+- Sort options: `relevance`, `price_asc`, `price_desc`, `rating`, `discount`, `newest`
+- Default sort: relevance (featured first, then by rating)
+
+**Hook Updates**:
+1. **useInfiniteProducts.ts** - Added `sort` parameter
+   - Exported `SORT_OPTIONS` constant
+   - Exported `SortOption` type
+
+2. **useBrands.ts** - New hook for fetching brands
+   - `useBrands()` - Fetches all brands
+   - `useBrand(slugOrId)` - Fetches single brand
+
+**Files Modified**:
+- `store/src/components/home/index.ts` - Re-exports ProductCard from products/
+- `store/src/components/home/FeaturedProducts.tsx` - Updated import path
+- `store/src/app/category/[slug]/products/page.tsx` - Now uses ProductGrid component
+- `store/src/hooks/index.ts` - Export new hooks and types
+
+**Key Implementation Decisions**:
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Filter/Sort Location | Server-side via API | Works with pagination, supports large datasets |
+| URL State | Query params (?sort=, ?brand=) | Shareable, bookmarkable, back button works |
+| Controls Bar | Sticky below header | Easy access while scrolling |
+| Brand Filter | Shown only when not already filtering by brand | Contextual, no redundancy |
+| Clear Filters | Button appears when any filter active | Quick reset UX |
+| Grid Columns | 2→3→4 (mobile→tablet→desktop) | Consistent with existing design |
+
+**Sort Options**:
+| Value | Label | Logic |
+|-------|-------|-------|
+| `relevance` | Relevance | Featured first, then by rating |
+| `price_asc` | Price: Low to High | Selling price ascending |
+| `price_desc` | Price: High to Low | Selling price descending |
+| `rating` | Customer Rating | Average rating descending |
+| `discount` | Discount | Discount percentage descending |
+| `newest` | Newest First | Created date descending |
+
+**URL Examples**:
+- `/category/mixer-grinder/products` - Default (relevance sort, no brand filter)
+- `/category/mixer-grinder/products?sort=price_asc` - Sorted by price
+- `/category/mixer-grinder/products?brand=prestige` - Filtered by brand
+- `/category/mixer-grinder/products?sort=rating&brand=bajaj` - Both applied
+
+**Component Usage**:
+```tsx
+// Category page
+<ProductGrid
+  categoryId={category.id}
+  showBrandFilter={true}
+  header={<CategoryHeader ... />}
+/>
+
+// Search page (future)
+<ProductGrid
+  search={query}
+  showSearchSuggestion={true}
+  header={<SearchHeader ... />}
+/>
+
+// Brand page (future)
+<ProductGrid
+  brandId={brand.id}
+  showBrandFilter={false}
+  header={<BrandHeader ... />}
+/>
+```

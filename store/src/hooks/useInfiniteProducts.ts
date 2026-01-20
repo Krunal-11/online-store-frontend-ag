@@ -11,10 +11,23 @@ const PRODUCTS_PER_PAGE = parseInt(
 
 const fetcher = (url: string) => api.get(url).then((res) => res.data);
 
+// Sort options type
+export type SortOption = 'relevance' | 'price_asc' | 'price_desc' | 'rating' | 'discount' | 'newest';
+
+export const SORT_OPTIONS: { value: SortOption; label: string }[] = [
+  { value: 'relevance', label: 'Relevance' },
+  { value: 'price_asc', label: 'Price: Low to High' },
+  { value: 'price_desc', label: 'Price: High to Low' },
+  { value: 'rating', label: 'Customer Rating' },
+  { value: 'discount', label: 'Discount' },
+  { value: 'newest', label: 'Newest First' },
+];
+
 interface UseInfiniteProductsParams {
   categoryId?: string;
   brandId?: string;
   search?: string;
+  sort?: SortOption;
 }
 
 export function useInfiniteProducts(params?: UseInfiniteProductsParams) {
@@ -38,6 +51,7 @@ export function useInfiniteProducts(params?: UseInfiniteProductsParams) {
     if (params?.categoryId) searchParams.set('categoryId', params.categoryId);
     if (params?.brandId) searchParams.set('brandId', params.brandId);
     if (params?.search) searchParams.set('search', params.search);
+    if (params?.sort) searchParams.set('sort', params.sort);
 
     return `/products?${searchParams.toString()}`;
   };

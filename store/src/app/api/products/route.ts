@@ -130,6 +130,35 @@ const transformToProductListItems = (): ProductListItem[] => {
   return items;
 };
 
+// Sort function for products
+type SortOption = 'relevance' | 'price_asc' | 'price_desc' | 'rating' | 'discount' | 'newest';
+
+const sortProducts = (items: ProductListItem[], sortBy: SortOption): ProductListItem[] => {
+  const sorted = [...items];
+  
+  switch (sortBy) {
+    case 'price_asc':
+      return sorted.sort((a, b) => a.sellingPrice - b.sellingPrice);
+    case 'price_desc':
+      return sorted.sort((a, b) => b.sellingPrice - a.sellingPrice);
+    case 'rating':
+      return sorted.sort((a, b) => b.averageRating - a.averageRating);
+    case 'discount':
+      return sorted.sort((a, b) => b.discountPercentage - a.discountPercentage);
+    case 'newest':
+      // For mock data, reverse the array (newer items last in JSON)
+      return sorted.reverse();
+    case 'relevance':
+    default:
+      // Featured first, then by rating
+      return sorted.sort((a, b) => {
+        if (a.isFeatured && !b.isFeatured) return -1;
+        if (!a.isFeatured && b.isFeatured) return 1;
+        return b.averageRating - a.averageRating;
+      });
+  }
+};
+
 export async function GET(request: NextRequest) {
   await delay(200);
 
@@ -141,6 +170,7 @@ export async function GET(request: NextRequest) {
   const categoryId = searchParams.get('categoryId');
   const brandId = searchParams.get('brandId');
   const featured = searchParams.get('featured');
+  const sort = (searchParams.get('sort') || 'relevance') as SortOption;
 
   // Get all products as list items
   let items = transformToProductListItems();
@@ -175,6 +205,9 @@ export async function GET(request: NextRequest) {
   if (featured === 'true') {
     items = items.filter((item) => item.isFeatured);
   }
+
+  // Apply sorting
+  items = sortProducts(items, sort);
 
   // Paginate results
   const result = paginate(items, page, limit);

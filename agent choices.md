@@ -203,6 +203,29 @@ font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
 | Level 1 (Sub) | Shown below Level 0 when parent expanded |
 | Level 2 (Sub-sub) | Shown below Level 1, always navigates to products |
 
+#### Product Detail Components (Step 8)
+| Component | Purpose | Location |
+|-----------|---------|----------|
+| `ProductImageGallery` | Hybrid carousel/thumbnail gallery | `components/products/ProductImageGallery.tsx` |
+| `VariantSelector` | Pill buttons for variant selection | `components/products/VariantSelector.tsx` |
+| `ProductInfo` | Name, price, rating, wishlist | `components/products/ProductInfo.tsx` |
+| `ProductAccordion` | Specs, delivery, returns | `components/products/ProductAccordion.tsx` |
+| `RelatedProducts` | Horizontal product carousel | `components/products/RelatedProducts.tsx` |
+
+#### Product Page Layout
+| Section | Desktop | Mobile |
+|---------|---------|--------|
+| Image Gallery | Left column (50%) | Full width, top |
+| Product Info | Right column, sticky | Below images |
+| Related Products | Full width, below | Full width, bottom |
+
+#### Variant URL Strategy
+| Element | Format | Example |
+|---------|--------|--------|
+| Product URL | `/products/{product-slug}` | `/products/prestige-deluxe-alpha-pressure-cooker` |
+| With Variant | `?variant={variant-slug}` | `?variant=3-litre` |
+| Variant Slug | Lowercase, hyphenated | `750w-3-jar`, `5-litre` |
+
 #### Infinite Scroll Configuration
 | Setting | Value | Location |
 |---------|-------|----------|
@@ -275,4 +298,4 @@ List endpoints return `ProductListItem` (merged view), detail endpoints return f
 
 ---
 
-*Last Updated: 2026-01-20 (Step 6: Category Navigation and Pages)*
+*Last Updated: 2026-01-21 (Step 8: Product Detail Page)*

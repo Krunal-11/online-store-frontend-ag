@@ -46,11 +46,56 @@ export interface ProductWithDetails extends Product {
   images: ProductImage[];
 }
 
+// Product Variant for detail page
+export interface ProductVariant {
+  id: string;
+  slug: string;
+  name: string;
+  sku: string;
+  mrp: number;
+  sellingPrice: number;
+  discountPercentage: number;
+  stockQuantity: number;
+  isDefaultVariant: boolean;
+  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT';
+  attributes: Record<string, string | number | boolean>;
+  images: ProductImage[];
+}
+
+// Complete product detail for product page
+export interface ProductDetail {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  brand: {
+    id: string;
+    name: string;
+    slug: string;
+    logoUrl?: string;
+  };
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+    path: string;
+    breadcrumb: { name: string; slug: string }[];
+  };
+  variants: ProductVariant[];
+  images: ProductImage[];
+  averageRating: number;
+  totalReviews: number;
+  isFeatured: boolean;
+  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT';
+}
+
 export interface ProductListItem {
   id: string;
   productGroupId: string;
   name: string;
   slug: string;
+  variantSlug?: string;
+  variantName?: string;
   brandName: string;
   categoryId?: string;
   categoryName?: string;

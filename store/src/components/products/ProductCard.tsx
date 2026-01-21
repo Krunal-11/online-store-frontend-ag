@@ -49,10 +49,15 @@ export function ProductCard({ product, className }: ProductCardProps) {
   };
 
   const hasDiscount = product.discountPercentage > 0;
+  
+  // Build product URL with variant slug if available
+  const productUrl = product.variantSlug
+    ? `/products/${product.slug}?variant=${product.variantSlug}`
+    : `/products/${product.slug}`;
 
   return (
     <Link
-      href={`/product/${product.slug}`}
+      href={productUrl}
       className={cn(
         'group relative flex flex-col bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300',
         className

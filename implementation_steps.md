@@ -15,7 +15,7 @@ This document tracks the implementation progress of the New Guru Enterprises onl
 5. ✅ Homepage Implementation
 6. ✅ Category Navigation and Pages
 7. ✅ Product Grid Component
-8. ⬜ Product Detail Page
+8. ✅ Product Detail Page
 9. ⬜ Authentication System (Phone OTP Mock)
 10. ⬜ Wishlist Functionality
 11. ⬜ Search Functionality
@@ -458,3 +458,70 @@ npm run dev
   header={<BrandHeader ... />}
 />
 ```
+
+---
+
+### Step 8: Product Detail Page ✅
+**Completed**: 2026-01-21
+
+**What was created**:
+
+**Components Created** (`store/src/components/products/`):
+1. **ProductImageGallery.tsx** - Hybrid image gallery
+   - Mobile: Swipe carousel with dot indicators
+   - Desktop: Carousel with thumbnail strip below
+   - Uses embla-carousel (already installed)
+
+2. **VariantSelector.tsx** - Variant selection pills
+   - Pill buttons showing variant names
+   - Selected state: Primary color fill
+   - Out-of-stock: Disabled, strikethrough
+
+3. **ProductInfo.tsx** - Product information display
+   - Brand name, product name, variant name
+   - Rating stars with review count
+   - Price with discount badge
+   - Stock status indicators
+   - Wishlist toggle (saves specific variant)
+
+4. **ProductAccordion.tsx** - Additional info sections
+   - Specifications table from variant attributes
+   - Delivery information
+   - Return policy
+
+5. **RelatedProducts.tsx** - Horizontal product carousel
+   - Uses ProductCard in embla carousel
+   - Arrow navigation on desktop
+
+**Pages Created** (`store/src/app/products/[slug]/`):
+- **page.tsx** - Main product detail page
+- **not-found.tsx** - Custom 404 for products
+
+**API Routes Created**:
+- `/api/products/[slug]/related` - Related products with fallback logic
+
+**Schema Updates**:
+- Added `slug` field to all 20 variants in `products.json`
+- Added `stockQuantity` to variant API response
+- Added `variantSlug`, `variantName` to `ProductListItem`
+- New types: `ProductVariant`, `ProductDetail`
+
+**Key Implementation Decisions**:
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Variant URL | Query param (`?variant=3-litre`) | Shareable, human-readable, simple routing |
+| Image Gallery | Hybrid carousel/thumbnails | Mobile swipe, desktop click |
+| Wishlist Scope | Variant-level | Price/stock differ per variant |
+| Related Products | Category → Brand → Featured | Priority-based fallback |
+| Sticky Column | Right column on desktop | Product info always visible |
+
+**URL Structure**:
+- Product page: `/products/{product-slug}`
+- With variant: `/products/{product-slug}?variant={variant-slug}`
+
+**Related Products Algorithm**:
+1. Same category (excluding current)
+2. Same brand (if not enough)
+3. Featured products (if still not enough)
+4. Maximum 6 products returned

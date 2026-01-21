@@ -29,6 +29,7 @@ interface ProductVariant {
   id: string;
   productGroupId: string;
   sku: string;
+  slug: string;
   name: string;
   mrp: number;
   sellingPrice: number;
@@ -113,6 +114,8 @@ const transformToProductListItems = (): ProductListItem[] => {
       productGroupId: group.id,
       name: group.name,
       slug: group.slug,
+      variantSlug: defaultVariant.slug,
+      variantName: defaultVariant.name,
       brandName: brand?.name || 'Unknown Brand',
       categoryId: group.categoryId,
       categoryName: category?.name || 'Uncategorized',

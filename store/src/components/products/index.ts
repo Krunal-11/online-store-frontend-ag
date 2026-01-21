@@ -3,3 +3,8 @@ export { ProductGrid } from './ProductGrid';
 export { ProductGridControls } from './ProductGridControls';
 export { ProductGridSkeleton } from './ProductGridSkeleton';
 export { ProductEmptyState } from './ProductEmptyState';
+export { ProductImageGallery, ProductImageGallerySkeleton } from './ProductImageGallery';
+export { VariantSelector, VariantSelectorSkeleton } from './VariantSelector';
+export { ProductInfo, ProductInfoSkeleton } from './ProductInfo';
+export { ProductAccordion, ProductAccordionSkeleton } from './ProductAccordion';
+export { RelatedProducts, RelatedProductsSkeleton } from './RelatedProducts';

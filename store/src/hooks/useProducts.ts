@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import api from '@/lib/api';
-import type { ProductListItem, ProductWithDetails, PaginatedResponse, ApiResponse } from '@/types';
+import type { ProductListItem, ProductDetail, PaginatedResponse, ApiResponse } from '@/types';
 
 const fetcher = (url: string) => api.get(url).then((res) => res.data);
 
@@ -39,7 +39,7 @@ export function useProducts(params?: {
 
 // Hook for fetching single product details
 export function useProduct(slugOrId: string | undefined) {
-  const { data, error, isLoading, mutate } = useSWR<ApiResponse<ProductWithDetails>>(
+  const { data, error, isLoading, mutate } = useSWR<ApiResponse<ProductDetail>>(
     slugOrId ? `/products/${slugOrId}` : null,
     fetcher
   );

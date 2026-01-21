@@ -27,6 +27,7 @@ interface ProductVariant {
   id: string;
   productGroupId: string;
   sku: string;
+  slug: string;
   name: string;
   mrp: number;
   sellingPrice: number;
@@ -84,6 +85,7 @@ export async function GET(request: NextRequest) {
             productGroupId: item.productGroupId,
             name: productGroup.name,
             slug: productGroup.slug,
+            variantSlug: variant?.slug || '',
             variantName: variant?.name || '',
             brandName: brand?.name || 'Unknown Brand',
             mrp: variant?.mrp || 0,

@@ -16,7 +16,7 @@ This document tracks the implementation progress of the New Guru Enterprises onl
 6. ✅ Category Navigation and Pages
 7. ✅ Product Grid Component
 8. ✅ Product Detail Page
-9. ⬜ Authentication System (Phone OTP Mock)
+9. ✅ Authentication System (Phone OTP Mock)
 10. ⬜ Wishlist Functionality
 11. ⬜ Search Functionality
 12. ⬜ Admin Panel - Layout and Authentication
@@ -525,3 +525,89 @@ npm run dev
 2. Same brand (if not enough)
 3. Featured products (if still not enough)
 4. Maximum 6 products returned
+
+---
+
+### Step 9: Authentication System (Phone OTP Mock) ✅
+**Completed**: 2026-01-21
+
+**What was created**:
+
+**Components Created** (`store/src/components/auth/`):
+1. **LoginForm.tsx** - Multi-step authentication form
+   - Step 1: Phone input with country code selector
+   - Step 2: OTP verification with 6-digit input
+   - Step 3: Name input for new users
+   - Loading states and validation
+   - 30-second resend timer
+
+2. **OtpInput.tsx** - Custom 6-digit OTP input
+   - Individual input boxes with auto-focus
+   - Arrow key navigation between digits
+   - Paste support (full OTP paste)
+   - Backspace handling
+
+3. **index.ts** - Barrel exports
+
+**Pages Created** (`store/src/app/login/`):
+- **page.tsx** - Login page with centered card layout
+  - Redirect if already authenticated
+  - Supports `?redirect=` query param
+  - Store branding and footer links
+
+**API Routes Created/Updated**:
+
+| Route | Method | Changes |
+|-------|--------|--------|
+| `/api/auth/send-otp` | POST | Added `resendAvailableIn`, random OTP generation, international phone support |
+| `/api/auth/verify-otp` | POST | Admin detection by phone, new user detection, returns `isNewUser` flag |
+| `/api/auth/profile` | GET/PUT | New - Profile read and update |
+
+**Files Modified**:
+- `store/src/context/AuthContext.tsx` - Fixed profile API path
+
+**Key Implementation Decisions**:
+
+| Decision | Choice | Rationale |
+|----------|--------|----------|
+| Login UI | Full page at `/login` | Simpler for Phase 1, clear flow |
+| Phone Prefix | Editable country code dropdown | Supports international users |
+| OTP Timer | 30-second countdown | Prevents spam, standard UX |
+| New User Detection | Backend returns `isNewUser` flag | Clean separation of concerns |
+| Admin Detection | Based on phone number | Simple for mock, admin phone: `+919849067667` |
+| OTP Input | 6 individual boxes | Better UX, supports paste |
+
+**Authentication Flow**:
+```
+1. User enters phone number with country code
+2. Click "Send OTP" → API logs OTP to console
+3. Enter any 6-digit OTP
+4. If new user → Show name input step
+5. Redirect to return URL or homepage
+```
+
+**API Response Examples**:
+
+**POST /api/auth/send-otp**:
+```json
+{
+  "success": true,
+  "message": "OTP sent successfully",
+  "expiresIn": 300,
+  "resendAvailableIn": 30
+}
+```
+
+**POST /api/auth/verify-otp**:
+```json
+{
+  "success": true,
+  "token": "base64-encoded-jwt",
+  "user": { "id", "phone", "name", "role" },
+  "isNewUser": true
+}
+```
+
+**Admin Phone Numbers**:
+- `+919849067667` - Store owner (returns `role: 'ADMIN'`)
+- All other phones return `role: 'USER'`

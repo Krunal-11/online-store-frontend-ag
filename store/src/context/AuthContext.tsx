@@ -72,9 +72,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const updateProfile = useCallback(async (data: Partial<User>) => {
     try {
-      const response = await api.put('/user/profile', data);
+      const response = await api.put('/auth/profile', data);
       if (response.data.success) {
-        setUser(response.data.user);
+        // Merge the updated data with existing user
+        setUser(prev => prev ? { ...prev, ...response.data.user } : response.data.user);
         return true;
       }
       return false;

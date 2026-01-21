@@ -288,7 +288,88 @@ List endpoints return `ProductListItem` (merged view), detail endpoints return f
 
 ---
 
-## 5. IMPORTANT REMINDERS
+## 5. AUTHENTICATION PATTERNS (Step 9)
+
+### 5.1 Login Page Design
+
+| Element | Styling |
+|---------|---------|
+| Container | Centered card, max-width 448px |
+| Background | `bg-secondary/30` subtle tint |
+| Card | White background, shadow-lg, rounded-lg |
+| Logo | Primary color, links to home |
+| Footer | Terms & Privacy links |
+
+### 5.2 Phone Input Design
+
+| Element | Choice | Rationale |
+|---------|--------|-----------|
+| Country Code | Dropdown selector (editable) | Supports international users |
+| Default | +91 (India) | Primary market |
+| Input | Numeric only, max 15 digits | Prevents invalid input |
+| Icon | Phone icon inside input | Visual clarity |
+
+### 5.3 OTP Input Design
+
+| Feature | Implementation |
+|---------|---------------|
+| Input Style | 6 individual boxes, 48x56px each |
+| Auto-focus | First box on mount |
+| Navigation | Arrow keys move between boxes |
+| Paste | Supports pasting full OTP |
+| Error State | Red border on all boxes |
+| Disabled | Grayed out during verification |
+
+### 5.4 Authentication Decisions
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Auth Method | Phone OTP | No password to remember, common in India |
+| Token Storage | localStorage | Simple for mock, will migrate to httpOnly cookies |
+| Token Format | Base64 JSON (mock JWT) | Easy to debug, real JWT in production |
+| Token Expiry | 30 days | Reduce re-login friction |
+| Session Check | On app mount | Immediate auth state resolution |
+
+### 5.5 New User Flow
+
+```
+OTP Verified → isNewUser: true → Name Input Step → Profile API → Redirect
+```
+
+- First-time users must provide their name
+- Name is saved via `PUT /api/auth/profile`
+- User state updated with new name before redirect
+
+### 5.6 Admin Detection
+
+Admin role is determined by phone number:
+
+| Phone | Role | User |
+|-------|------|------|
+| +919849067667 | ADMIN | Store owner |
+| Any other | USER | Regular customer |
+
+### 5.7 Form Validation
+
+| Field | Validation |
+|-------|------------|
+| Phone | Required, 6-15 digits after country code |
+| OTP | Required, exactly 6 digits |
+| Name | Required, minimum 2 characters |
+
+### 5.8 Loading & Error States
+
+| State | UI Feedback |
+|-------|-------------|
+| Sending OTP | Button disabled, spinner, "Sending OTP..." |
+| Verifying | Button disabled, spinner, "Verifying..." |
+| OTP Resend | 30-second countdown, disabled state |
+| Error | Red text below field, toast notification |
+| Success | Toast notification, redirect |
+
+---
+
+## 6. IMPORTANT REMINDERS
 
 - **Single source of truth**: All colors are in `globals.css` CSS variables
 - **Mobile-first**: User pages designed for mobile, scaled up for desktop
@@ -298,4 +379,4 @@ List endpoints return `ProductListItem` (merged view), detail endpoints return f
 
 ---
 
-*Last Updated: 2026-01-21 (Step 8: Product Detail Page)*
+*Last Updated: 2026-01-21 (Step 9: Authentication System)*

@@ -32,6 +32,7 @@ interface ProductVariant {
   mrp: number;
   sellingPrice: number;
   discountPercentage: number;
+  stockQuantity?: number;
   status: string;
   isDefaultVariant: boolean;
   attributes: Record<string, string>;
@@ -77,6 +78,11 @@ export async function GET(request: NextRequest) {
     const variant = products.find((p) => p.id === item.variantId);
     const brand = brandsData.find((b) => b.id === productGroup?.brandId);
 
+    // Check if product or variant is unavailable (INACTIVE or ARCHIVED status)
+    const isProductUnavailable = !productGroup || productGroup.status !== 'ACTIVE';
+    const isVariantUnavailable = !variant || variant.status !== 'ACTIVE';
+    const isUnavailable = isProductUnavailable || isVariantUnavailable;
+
     return {
       ...item,
       product: productGroup
@@ -94,6 +100,8 @@ export async function GET(request: NextRequest) {
             averageRating: productGroup.averageRating,
             totalReviews: productGroup.totalReviews,
             primaryImage: getPlaceholderImage(productGroup.name, 400, 400),
+            status: isUnavailable ? 'INACTIVE' : 'ACTIVE',
+            stockQuantity: variant?.stockQuantity ?? 0,
           }
         : null,
     };

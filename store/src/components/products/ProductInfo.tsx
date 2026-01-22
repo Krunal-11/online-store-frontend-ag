@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Heart, Star, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { useWishlist, addToWishlist, removeFromWishlist } from '@/hooks';
 import { useAuth } from '@/context';
 import type { ProductVariant, WishlistItem } from '@/types';
+import { toast } from 'sonner';
 
 interface ProductInfoProps {
   productGroupId: string;
@@ -28,7 +30,8 @@ export function ProductInfo({
   reviewCount,
   description,
 }: ProductInfoProps) {
-  const { user } = useAuth();
+  const router = useRouter();
+  const { user, isAuthenticated } = useAuth();
   const { items: wishlist, isLoading: wishlistLoading, mutate: refreshWishlist } = useWishlist();
   const [isWishlistUpdating, setIsWishlistUpdating] = useState(false);
 
@@ -39,8 +42,12 @@ export function ProductInfo({
   const isInWishlist = !!wishlistItem;
 
   const handleWishlistToggle = async () => {
-    if (!user) {
-      // Could trigger auth modal here
+    // TODO: After backend integration, check for JWT token existence instead of isAuthenticated
+    // This is a temporary solution - the real auth check should be done by verifying the JWT token
+    if (!isAuthenticated) {
+      // Redirect to login with return URL
+      const currentPath = window.location.pathname + window.location.search;
+      router.push(`/login?returnUrl=${encodeURIComponent(currentPath)}`);
       return;
     }
 
@@ -48,10 +55,15 @@ export function ProductInfo({
     try {
       if (isInWishlist && wishlistItem) {
         await removeFromWishlist(wishlistItem.id);
+        toast.success('Removed from wishlist');
       } else {
         await addToWishlist(productGroupId, selectedVariant.id);
+        toast.success('Added to wishlist');
       }
       refreshWishlist();
+    } catch (error) {
+      console.error('Wishlist error:', error);
+      toast.error('Failed to update wishlist. Please try again.');
     } finally {
       setIsWishlistUpdating(false);
     }
@@ -122,7 +134,7 @@ export function ProductInfo({
             isInWishlist && 'text-red-500 border-red-200 hover:bg-red-50'
           )}
           onClick={handleWishlistToggle}
-          disabled={!user || isWishlistUpdating || wishlistLoading}
+          disabled={isWishlistUpdating || wishlistLoading}
         >
           {isWishlistUpdating ? (
             <Loader2 className="h-5 w-5 animate-spin" />
@@ -131,9 +143,6 @@ export function ProductInfo({
           )}
           {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
         </Button>
-        {!user && (
-          <p className="text-sm text-gray-500 mt-2">Sign in to add to wishlist</p>
-        )}
       </div>
 
       {/* Description */}

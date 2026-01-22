@@ -2,13 +2,16 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Heart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useIsInWishlist, addToWishlist, removeFromWishlist, useWishlist } from '@/hooks';
+import { useAuth } from '@/context';
 import type { ProductListItem } from '@/types';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 interface ProductCardProps {
   product: ProductListItem;
@@ -26,6 +29,8 @@ export const formatPrice = (price: number): string => {
 };
 
 export function ProductCard({ product, className }: ProductCardProps) {
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
   const { isInWishlist, wishlistItem, isLoading: wishlistLoading } = useIsInWishlist(
     product.productGroupId,
     product.id
@@ -36,15 +41,27 @@ export function ProductCard({ product, className }: ProductCardProps) {
     e.preventDefault();
     e.stopPropagation();
 
+    // TODO: After backend integration, check for JWT token existence instead of isAuthenticated
+    // This is a temporary solution - the real auth check should be done by verifying the JWT token
+    if (!isAuthenticated) {
+      // Get current path for return URL
+      const currentPath = window.location.pathname + window.location.search;
+      router.push(`/login?returnUrl=${encodeURIComponent(currentPath)}`);
+      return;
+    }
+
     try {
       if (isInWishlist && wishlistItem) {
         await removeFromWishlist(wishlistItem.id);
+        toast.success('Removed from wishlist');
       } else {
         await addToWishlist(product.productGroupId, product.id);
+        toast.success('Added to wishlist');
       }
       refreshWishlist();
     } catch (error) {
       console.error('Wishlist error:', error);
+      toast.error('Failed to update wishlist. Please try again.');
     }
   };
 

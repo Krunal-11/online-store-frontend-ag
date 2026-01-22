@@ -107,6 +107,8 @@ export interface ProductListItem {
   primaryImage: string;
   isFeatured?: boolean;
   variantCount?: number;
+  status?: 'ACTIVE' | 'INACTIVE' | 'DRAFT';
+  stockQuantity?: number;
 }
 
 // Category Types

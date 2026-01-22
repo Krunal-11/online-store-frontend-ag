@@ -369,7 +369,63 @@ Admin role is determined by phone number:
 
 ---
 
-## 6. IMPORTANT REMINDERS
+## 6. WISHLIST (Step 10)
+
+### 6.1 Page & URL Structure
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| URL | `/wishlist` | Simple, consistent with header navigation |
+| Access | Protected (login required) | Wishlist is user-specific data |
+| Grid Layout | Same as product browsing (2→3→4 cols) | Visual consistency |
+
+### 6.2 Authentication Handling
+
+| Action | Behavior |
+|--------|----------|
+| Click heart (not logged in) | Redirect to `/login?returnUrl={currentPage}` |
+| Click heart (logged in) | Toggle wishlist, show toast |
+| Visit `/wishlist` (not logged in) | Redirect to `/login?returnUrl=/wishlist` |
+
+**Temporary Implementation**: Uses `isAuthenticated` from AuthContext. TODO added for JWT token check after backend integration.
+
+### 6.3 WishlistProductCard vs ProductCard
+
+| Aspect | Decision | Rationale |
+|--------|----------|-----------|
+| Separate Component | Yes (WishlistProductCard) | Different interaction (remove vs toggle), status indicators |
+| Remove Button | X icon, top-right | Clear action, doesn't block product view |
+| Remove Visibility | Desktop: on hover / Mobile: always visible | Mobile needs easy access |
+| Heart Indicator | Filled heart, bottom-right of image | Shows saved status without taking action space |
+
+### 6.4 Product Status Indicators
+
+| Status | Visual |
+|--------|--------|
+| Available | Normal card |
+| Out of Stock | Gray "Out of Stock" badge (replaces discount), 75% opacity |
+| Unavailable (INACTIVE) | Full gray state, alert icon, no product details |
+
+### 6.5 Toast Notifications
+
+All wishlist actions provide feedback via `sonner` toasts:
+
+| Action | Toast |
+|--------|-------|
+| Add to wishlist | ✓ "Added to wishlist" |
+| Remove from wishlist | ✓ "Removed from wishlist" |
+| API error | ✗ "Failed to update wishlist. Please try again." |
+
+### 6.6 Empty State
+
+- Icon: Heart icon in primary color circle
+- Title: "Your wishlist is empty"
+- Message: "Save items you love by clicking the heart icon on any product."
+- CTA: "Back to Home" button
+
+---
+
+## 7. IMPORTANT REMINDERS
 
 - **Single source of truth**: All colors are in `globals.css` CSS variables
 - **Mobile-first**: User pages designed for mobile, scaled up for desktop
@@ -379,4 +435,4 @@ Admin role is determined by phone number:
 
 ---
 
-*Last Updated: 2026-01-21 (Step 9: Authentication System)*
+*Last Updated: 2026-01-22 (Step 10: Wishlist Functionality)*

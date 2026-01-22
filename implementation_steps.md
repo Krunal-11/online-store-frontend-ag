@@ -17,7 +17,7 @@ This document tracks the implementation progress of the New Guru Enterprises onl
 7. ✅ Product Grid Component
 8. ✅ Product Detail Page
 9. ✅ Authentication System (Phone OTP Mock)
-10. ⬜ Wishlist Functionality
+10. ✅ Wishlist Functionality
 11. ⬜ Search Functionality
 12. ⬜ Admin Panel - Layout and Authentication
 13. ⬜ Admin Panel - Category Management
@@ -611,3 +611,84 @@ npm run dev
 **Admin Phone Numbers**:
 - `+919849067667` - Store owner (returns `role: 'ADMIN'`)
 - All other phones return `role: 'USER'`
+
+---
+
+### Step 10: Wishlist Functionality ✅
+**Completed**: 2026-01-22
+
+**What was created**:
+
+**Pages Created** (`store/src/app/`):
+1. **Wishlist Page** (`/wishlist/page.tsx`)
+   - Protected route (redirects to login if not authenticated)
+   - Header with wishlist icon and item count
+   - Product grid showing saved items
+   - Empty state with "Browse Products" CTA
+   - Skeleton loaders during loading
+
+**Components Created** (`store/src/components/products/`):
+1. **WishlistProductCard.tsx** - Specialized card for wishlist items
+   - Same layout as ProductCard for consistency
+   - Remove button (X) on hover (desktop) / always visible (mobile)
+   - Filled heart indicator at bottom-right of image
+   - Unavailable product state: Grayed out, "Unavailable" badge, alert icon
+   - Out of stock state: "Out of Stock" badge, reduced opacity
+   - Shows variant name if applicable
+   - Toast notifications on remove
+
+**Files Modified**:
+1. **ProductCard.tsx** - Added auth check and toasts
+   - Auth check before wishlist toggle (redirects to login)
+   - Toast notifications: "Added to wishlist", "Removed from wishlist"
+   - Error toast on API failure
+   - TODO comment for backend JWT integration
+
+2. **ProductInfo.tsx** - Added auth check and toasts
+   - Auth check with login redirect (removed "Sign in" text)
+   - Toast notifications on add/remove
+   - Error handling with toast
+
+3. **types/index.ts** - Extended ProductListItem
+   - Added `status?: 'ACTIVE' | 'INACTIVE' | 'DRAFT'`
+   - Added `stockQuantity?: number`
+
+4. **api/wishlist/route.ts** - Enhanced response
+   - Added `status` field to wishlist product response
+   - Added `stockQuantity` field
+   - Detects unavailable products (INACTIVE status)
+
+5. **products/index.ts** - Added export for WishlistProductCard
+
+**Key Implementation Decisions**:
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Wishlist URL | `/wishlist` | Simple, already used in header redirects |
+| Auth Check | Redirect to login | Consistent with product detail page behavior |
+| Remove Button | X icon on hover (desktop) / visible (mobile) | Non-intrusive, doesn't block product view |
+| Unavailable Products | Grayed card + badge + alert icon | Clear indication, still allows removal |
+| Out of Stock | Badge + reduced opacity | Different from unavailable, product still viewable |
+| Toast Library | sonner (already installed) | Consistent with existing setup |
+| Auth Temp Solution | Check `isAuthenticated` from context | TODO added for JWT token check post-backend |
+
+**Wishlist Page States**:
+| State | Display |
+|-------|---------|
+| Loading | 4 skeleton cards |
+| Empty | Icon, message, "Back to Home" button |
+| Error | Error message |
+| With Items | Product grid (2→3→4 columns) |
+
+**Product Status Indicators** (on WishlistProductCard):
+| Status | Visual Treatment |
+|--------|------------------|
+| Available | Normal card |
+| Out of Stock | Gray badge, 75% opacity |
+| Unavailable/Inactive | Gray card, alert icon, "Unavailable" badge, no product details |
+
+**Toast Messages**:
+- "Added to wishlist" - Success
+- "Removed from wishlist" - Success
+- "Failed to update wishlist. Please try again." - Error
+- "Failed to remove item. Please try again." - Error (wishlist page)

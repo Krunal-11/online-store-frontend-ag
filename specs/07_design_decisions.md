@@ -2,6 +2,8 @@
 
 Living document to track all design decisions, architectural choices, and important implementation details during development.
 
+**Last Updated**: 2026-01-22 (Updated to reflect Phase 1 implementation through Step 9)
+
 ---
 
 ## How to Use This Document
@@ -18,86 +20,130 @@ Living document to track all design decisions, architectural choices, and import
 - Include the date, decision made, rationale, and alternatives considered
 - Keep this as a changelog of your architectural choices
 
-**Format for New Entries**:
-```markdown
-## [Component/Feature Name]
-
-**Decision Date**: YYYY-MM-DD
-**Decision**: What was chosen
-**Rationale**: Why this choice was made
-**Alternatives Considered**: What else was evaluated
-**Trade-offs**: Pros and cons
-**Implementation Notes**: Key details for future reference
-```
+**Note**: For the most current and detailed decisions, also refer to `agent choices.md` which is updated during each implementation step.
 
 ---
 
-# PRE-IMPLEMENTATION DECISIONS
+# IMPLEMENTED DECISIONS (Steps 1-9)
 
-These decisions were made during the planning phase before coding begins.
-
----
-
-## Router Choice: App Router vs Pages Router
-
-**Decision Date**: Pre-implementation
-**Decision**: Agent's choice - select based on familiarity and project needs
-**Options**:
-
-### Option A: App Router (Next.js 13+)
-**Pros**:
-- Modern, recommended by Next.js team
-- Server Components by default (better performance)
-- Improved data fetching patterns
-- Better TypeScript support
-- Nested layouts
-- Streaming and Suspense support
-
-**Cons**:
-- Newer, less Stack Overflow answers
-- Some libraries may have compatibility issues
-- Learning curve if unfamiliar
-
-**When to Choose**: For new projects, if familiar with React Server Components
-
-### Option B: Pages Router (Next.js 12 and earlier)
-**Pros**:
-- Mature, stable API
-- Extensive documentation and community support
-- More examples available
-- Familiar patterns
-
-**Cons**:
-- Legacy approach (will be maintained but not prioritized)
-- Missing modern features
-
-**When to Choose**: If more comfortable with traditional Next.js patterns
-
-**Recommendation**: App Router for modern best practices, Pages Router for stability
+These decisions were made during actual implementation.
 
 ---
 
-## TypeScript vs JavaScript
+## Router Choice: App Router ✅
 
-**Decision Date**: Pre-implementation
-**Decision**: Agent's choice - TypeScript recommended but not required
+**Decision Date**: Step 1 (2025-12-17)
+**Decision**: App Router (Next.js 14)
 **Rationale**: 
+- Modern, recommended by Next.js team
+- Server Components by default
+- Better TypeScript support
+- Nested layouts support
 
-### If Choosing TypeScript:
-**Benefits**:
-- Type safety reduces bugs (especially in API responses)
-- Better IDE autocomplete
-- Self-documenting code
-- Easier refactoring
+---
 
-**Setup Required**:
-- `tsconfig.json` with strict mode
-- Define interfaces for all API responses
-- Type all component props
-- Use proper types for state and hooks
+## TypeScript: Enabled ✅
 
-**Example Types Needed**:
-```typescript
+**Decision Date**: Step 1 (2025-12-17)
+**Decision**: TypeScript with strict mode
+**Implementation**:
+- `tsconfig.json` with strict mode enabled
+- All interfaces defined in `store/src/types/index.ts`
+- Props and state properly typed
+
+---
+
+## Color Palette: Teal + Amber ✅
+
+**Decision Date**: Step 2 (2025-01-05)
+**Decision**: Deep Teal (#0F766E) as primary, Warm Amber (#F59E0B) as accent
+**Rationale**: 
+- Teal: Professional, trustworthy, more distinctive than common blue
+- Amber: Warm, inviting, draws attention for CTAs
+- Green for discounts: Industry standard
+**Original Spec**: Blue (#2563EB) + Orange (#F97316)
+**Why Changed**: More distinctive brand identity
+
+---
+
+## Typography: System Fonts ✅
+
+**Decision Date**: Step 2 (2025-01-05)
+**Decision**: System font stack only (no Google Fonts)
+**Rationale**:
+- Zero load time (fonts already on device)
+- Native platform feel
+- Better performance
+- Can switch to custom fonts later
+**Original Spec**: Inter font with Google Fonts
+
+---
+
+## Category Navigation: Homepage Drill-Down ✅
+
+**Decision Date**: Step 6 (2026-01-20)
+**Decision**: Categories drill-down on homepage, not separate pages
+**Implementation**:
+- Level 0 categories always visible on homepage
+- Clicking expands subcategories below (nested)
+- Products accessed via `/category/{slug}/products`
+**Original Spec**: Navigate to `/categories/{slug}` pages
+**Why Changed**: Simpler UX, main categories always visible
+
+---
+
+## Product Grid: Infinite Scroll ✅
+
+**Decision Date**: Step 6-7 (2026-01-20)
+**Decision**: Infinite scroll with SWR Infinite
+**Implementation**:
+- Intersection Observer with 200px margin
+- 30 products per page (configurable via env var)
+- Sort and brand filter via URL params
+**Original Spec**: Agent's choice (infinite scroll or pagination)
+
+---
+
+## Mobile Header: Two-Row Layout ✅
+
+**Decision Date**: Step 3 (2025-01-05)
+**Decision**: Two-row mobile header
+**Implementation**:
+- Row 1: Hamburger, logo, icons
+- Row 2: Full-width search bar
+**Original Spec**: Single-row with search icon
+**Why Changed**: Better UX for search-first use case
+
+---
+
+## Authentication: Dedicated Page + localStorage ✅
+
+**Decision Date**: Step 9 (2026-01-21)
+**Decision**: Dedicated `/login` page, token in localStorage
+**Implementation**:
+- Full-page login experience at `/login`
+- OTP input as 6 individual boxes
+- Token stored in localStorage
+- New user name input step
+**Original Spec**: Modal OR page, httpOnly cookies recommended
+**Why Changed**: Simpler for Phase 1 mock implementation
+
+---
+
+## Admin Role Detection: Phone Number ✅
+
+**Decision Date**: Step 9 (2026-01-21)
+**Decision**: Admin determined by phone number
+**Implementation**:
+- Phone +919849067667 = ADMIN role
+- All other phones = USER role
+**Rationale**: Simple for Phase 1, will use database role in Phase 2
+
+---
+
+# PRE-IMPLEMENTATION DECISIONS (Reference)
+
+These decisions were documented in planning but may have been modified during implementation.
 // types/product.ts
 interface Product {
   id: string;
@@ -457,13 +503,20 @@ export function ProductSkeleton() {
 **Decision Date**: Pre-implementation
 **Decision**: SEO-friendly URLs with slugs
 
-**URL Structure**:
+> **Implementation Note**: Category navigation uses homepage drill-down pattern.
+> Products are listed at `/category/[slug]/products` for leaf categories.
+
+**URL Structure (Implemented)**:
 ```
 Homepage:              /
-Category Listing:      /categories/[slug]  (e.g., /categories/cookers)
-Product Detail:        /products/[slug]    (e.g., /products/prestige-cooker-2l)
+Category Products:     /category/[slug]/products  (e.g., /category/3-jar/products)
+Product Detail:        /products/[slug]           (e.g., /products/prestige-cooker-2l)
 Wishlist:              /wishlist
 Login:                 /login
+```
+
+**URL Structure (Future - Admin)**:
+```
 Admin Dashboard:       /admin
 Admin Products:        /admin/products
 Admin Add Product:     /admin/products/new

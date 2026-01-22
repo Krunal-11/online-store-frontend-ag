@@ -1,5 +1,7 @@
 Step-by-step user journeys showing how users and admins interact with the application - use this to understand complete workflows.
 
+**Last Updated**: 2026-01-22 (Updated to reflect Phase 1 implementation through Step 9)
+
 ---
 
 # USER FLOWS
@@ -12,113 +14,118 @@ Each flow shows a complete journey from start to finish. Use these to:
 - Plan navigation and redirects
 - Design API call sequences
 
+**Implementation Status**: ✅ Implemented | 🟡 Partial | ⬜ Not Started
+
 ---
 
 # CUSTOMER FLOWS
 
-## Flow 1: Guest User Discovers and Wishlists a Product
+## Flow 1: Guest User Discovers and Wishlists a Product 🟡
 
 **Scenario**: First-time visitor browses products and saves one to wishlist
 
 ### Steps:
 
-1. **Homepage Landing**
+1. **Homepage Landing** ✅
    - User opens website → Homepage loads
-   - Sees: Banner carousel (auto-rotating), Category cards, Store info footer
+   - Sees: Banner carousel (auto-rotating), Category cards (with drill-down), Featured products, Store info footer
    - No authentication required
 
-2. **Browse by Category**
-   - User clicks "Kitchen Essentials" category card
-   - Navigate to: `/categories/kitchen-essentials`
-   - Page shows: Breadcrumb (Home > Kitchen Essentials), Subcategory cards
+2. **Browse by Category** ✅ (UPDATED from original spec)
+   - User clicks "Kitchen Essentials" category card on homepage
+   - **Subcategories appear BELOW the main category grid** (not navigate to new page)
+   - "View All Products" button appears for the category
+   - Page stays on: `/` (homepage)
 
-3. **Navigate to Subcategory**
-   - User clicks "Pressure Cooker" subcategory
-   - Navigate to: `/categories/pressure-cooker`
-   - Page shows: Breadcrumb (Home > Kitchen Essentials > Pressure Cooker), Product grid
+3. **Navigate to Subcategory** ✅ (UPDATED)
+   - User clicks "Pressure Cooker" subcategory (which has no children)
+   - **OR** clicks "View All Products" button
+   - Navigate to: `/category/pressure-cooker/products`
+   - Page shows: Breadcrumb (Home > Kitchen Essentials > Pressure Cooker), Product grid with controls
 
-4. **View Product Grid**
-   - Sees multiple product tiles (3 tiles: 2L, 3L, 5L Prestige Deluxe Alpha variants)
-   - Each tile shows: Image, Brand, Name, Rating, MRP (strikethrough), Price, Discount badge
-   - Products load with lazy loading as user scrolls
+4. **View Product Grid** ✅
+   - Sees multiple product tiles
+   - Each tile shows: Image, Brand (uppercase), Name, Rating, MRP (strikethrough), Price, Discount badge
+   - **Infinite scroll** loads more products as user scrolls
+   - Sort and filter controls available (sticky on scroll)
 
-5. **Open Product Detail**
-   - User clicks "3 Litre" variant tile
-   - Navigate to: `/products/prestige-deluxe-alpha-pressure-cooker?variant=3L`
+5. **Open Product Detail** ✅
+   - User clicks product tile
+   - Navigate to: `/products/prestige-deluxe-alpha-pressure-cooker?variant=3-litre`
    - Page loads:
-     - Image gallery (primary image + thumbnails)
-     - Product info (brand, name, rating, prices, description)
-     - Variant selector (2L, 3L selected, 5L buttons)
-     - Specifications table
+     - Image gallery (carousel on mobile, thumbnails on desktop)
+     - Product info (brand, name, rating, prices)
+     - Variant selector (pill buttons)
+     - Accordion sections (Details, Delivery, Returns)
      - "Add to Wishlist" button
-     - Related products section
+     - Related products carousel
 
-6. **Attempt to Wishlist (Not Logged In)**
+6. **Attempt to Wishlist (Not Logged In)** ⬜
    - User clicks "Add to Wishlist" button
    - System checks: User not authenticated
    - Action: Redirect to login page
-   - Return URL preserved: `/login?returnUrl=/products/prestige-deluxe-alpha-pressure-cooker?variant=3L`
+   - Return URL preserved: `/login?returnUrl=/products/prestige-deluxe-alpha-pressure-cooker?variant=3-litre`
 
-7. **Login Flow Initiated**
-   - Login page/modal opens
-   - Shows: Phone number input (+91 prefix), Optional email input
+7. **Login Flow Initiated** ✅ (UPDATED)
+   - **Dedicated login page opens** (not modal)
+   - Shows: Country code dropdown (+91 default) + Phone number input
    - User enters: Phone "9876543210"
    - User clicks: "Send OTP"
 
-8. **OTP Verification**
+8. **OTP Verification** ✅ (UPDATED)
    - API call: POST /api/auth/send-otp → Success
-   - UI updates: Show OTP input field (6 digits)
-   - Display: "OTP sent to +919876543210"
-   - User receives SMS with OTP: "123456"
-   - User enters OTP in input
+   - UI updates: Show 6 individual OTP input boxes
+   - Display: "OTP sent to +91 9876543210"
+   - User receives SMS with OTP (mock: any 6 digits accepted)
+   - User enters OTP in boxes (auto-advances, supports paste)
    - User clicks: "Verify OTP"
 
-9. **First-Time User Setup**
-   - API call: POST /api/auth/verify-otp → Success (new user created)
+9. **First-Time User Setup** ✅
+   - API call: POST /api/auth/verify-otp → Success (isNewUser: true)
    - System detects: User name not set
-   - UI shows: "Welcome! Please enter your name" prompt
+   - UI shows: Name input field
    - User enters: "Rajesh Kumar"
+   - API call: PUT /api/auth/profile
    - Clicks: "Continue"
-   - Profile updated with name
 
-10. **Post-Login Redirect**
-    - Session token stored (cookie/localStorage)
+10. **Post-Login Redirect** ✅
+    - Session token stored (localStorage in Phase 1)
     - Header updates: Show "Hi, Rajesh" with user menu
     - Redirect to: Return URL (product page with variant)
-    - URL: `/products/prestige-deluxe-alpha-pressure-cooker?variant=3L`
+    - **OR** Admin Dashboard (if admin phone: +919849067667)
+    - URL: `/products/prestige-deluxe-alpha-pressure-cooker?variant=3-litre`
 
-11. **Add to Wishlist (Logged In)**
+11. **Add to Wishlist (Logged In)** ⬜
     - User clicks "Add to Wishlist" button again
     - System checks: User authenticated ✓
-    - API call: POST /api/wishlist { product_id, variant_id }
+    - API call: POST /api/wishlist { productId, variantId }
     - Success response received
     - UI updates:
-      - Button changes to "Saved" with filled heart icon
+      - Button changes to "Saved to Wishlist" with filled heart icon
       - Toast notification: "Added to wishlist"
-      - Wishlist count in header increments: "Wishlist (1)"
 
-12. **View Wishlist**
+12. **View Wishlist** ⬜
     - User clicks "Wishlist" in header menu
     - Navigate to: `/wishlist`
     - Page shows:
       - Header: "My Wishlist (1 item)"
-      - Product grid with saved item (3L Prestige cooker)
+      - Product grid with saved item
       - Each item has: Image, Name, Brand, Current price, "Remove" button
 
 **Alternative Paths**:
 - **If user was already logged in**: Skip steps 7-10, directly add to wishlist
-- **If OTP verification fails**: Show error, allow retry or resend OTP
+- **If OTP verification fails**: Show error (red border on OTP boxes), allow retry or resend
 - **If API error during wishlist add**: Show error toast, keep button as "Add to Wishlist"
 
 ---
 
-## Flow 2: Returning User Searches for Product
+## Flow 2: Returning User Searches for Product ⬜
 
 **Scenario**: Logged-in user searches for specific product
 
 ### Steps:
 
-1. **Already Logged In**
+1. **Already Logged In** ✅
    - User opens website (session token valid)
    - Homepage loads with user menu showing "Hi, [Name]"
    - Header shows: Wishlist count, Profile dropdown
@@ -213,7 +220,11 @@ Each flow shows a complete journey from start to finish. Use these to:
 
 ## Flow 4: User Browses Category Hierarchy
 
-**Scenario**: User navigates through 3-level category structure
+**Scenario**: User navigates through 3-level category structure via homepage drill-down
+
+> **Implementation Note (Phase 1)**: Categories are navigated via a drill-down pattern on the homepage. 
+> Clicking a category on the homepage updates the category grid to show its children (in-place), 
+> until reaching a leaf category which redirects to `/category/{slug}/products`.
 
 ### Steps:
 
@@ -221,28 +232,29 @@ Each flow shows a complete journey from start to finish. Use these to:
    - User sees main category cards: "Electronics", "Kitchen Essentials"
    - Clicks: "Electronics"
 
-2. **Level 1 - Subcategories**
-   - Navigate to: `/categories/electronics`
-   - Breadcrumb: Home > Electronics
-   - Page shows: Subcategory cards (Mixer Grinder, Other subcategories)
+2. **Level 1 - Subcategories (Homepage Drill-down)**
+   - Homepage updates in-place to show subcategories
+   - Breadcrumb appears: Electronics
+   - Grid shows: Subcategory cards (Mixer Grinder, Other subcategories)
    - Clicks: "Mixer Grinder"
 
-3. **Level 2 - Sub-subcategories**
-   - Navigate to: `/categories/mixer-grinder`
-   - Breadcrumb: Home > Electronics > Mixer Grinder
-   - Page shows: Sub-subcategory cards ("3 Jar", "4 Jar")
+3. **Level 2 - Sub-subcategories (Homepage Drill-down)**
+   - Homepage updates in-place again
+   - Breadcrumb: Electronics > Mixer Grinder
+   - Grid shows: Sub-subcategory cards ("3 Jar", "4 Jar")
    - Clicks: "3 Jar"
 
-4. **Level 3 - Products (Deepest Level)**
-   - Navigate to: `/categories/3-jar`
+4. **Level 3 - Products (Leaf Category - Navigates to Products Page)**
+   - Navigate to: `/category/3-jar/products`
    - Breadcrumb: Home > Electronics > Mixer Grinder > 3 Jar
    - Page shows: Product grid (no more subcategories, this is deepest level)
    - Displays: All products in "3 Jar" category
+   - Infinite scroll pagination enabled
 
 5. **Breadcrumb Navigation**
    - User clicks: "Mixer Grinder" in breadcrumb
-   - Navigate back to: `/categories/mixer-grinder`
-   - Shows: Sub-subcategory view again
+   - Returns to homepage with Mixer Grinder subcategories shown
+   - Or clicks "Home" to reset to root categories
 
 **Alternative Path - Category with No Subcategories**:
 1. User clicks category that has no children
@@ -473,7 +485,7 @@ Each flow shows a complete journey from start to finish. Use these to:
 **Alternative Path - Link to Category Instead**:
 - In step 3, admin selects: "Link to Category"
 - Selects category: "Mixer Grinder" from hierarchical dropdown
-- Clicking banner navigates to: `/categories/mixer-grinder`
+- Clicking banner navigates to: `/category/mixer-grinder/products`
 
 ---
 
@@ -526,7 +538,7 @@ Each flow shows a complete journey from start to finish. Use these to:
      ```
 
 7. **Verify on User-Facing Site**
-   - Navigate to: `/categories/mixer-grinder`
+   - Navigate to: Homepage, drill-down to Mixer Grinder
    - Shows subcategory cards: "3 Jar", "4 Jar Mixer"
    - Both clickable
 
@@ -637,13 +649,13 @@ Each flow shows a complete journey from start to finish. Use these to:
 
 ```
 Homepage (/)
-  ├─> Category Page (/categories/[slug])
-  │     ├─> Subcategory Page (/categories/[sub-slug])
-  │     │     └─> Product Grid (if no more subcategories)
-  │     └─> Product Grid (if no subcategories)
+  ├─> Category Drill-down (in-place on homepage)
+  │     ├─> Subcategory Drill-down (in-place on homepage)
+  │     │     └─> Leaf Category → Product Listing (/category/[slug]/products)
+  │     └─> Leaf Category → Product Listing (/category/[slug]/products)
   │           └─> Product Detail (/products/[slug])
   │
-  ├─> Search Results (/search?q=[query])
+  ├─> Search Results (/search?q=[query]) [Phase 2]
   │     └─> Product Detail (/products/[slug])
   │
   ├─> Login (/login)
@@ -652,7 +664,7 @@ Homepage (/)
   └─> Wishlist (/wishlist) [Auth Required]
         └─> Product Detail (/products/[slug])
 
-Admin Routes (/admin/*)
+Admin Routes (/admin/*) [Phase 2+]
   ├─> Dashboard (/admin/dashboard)
   ├─> Products (/admin/products)
   │     ├─> Add Product (/admin/products/new)

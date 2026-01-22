@@ -1,5 +1,7 @@
 UI/UX design specifications, component layouts, and responsive behavior - reference this for implementing visual design and interactions.
 
+**Last Updated**: 2026-01-22 (Updated to reflect Phase 1 implementation through Step 9)
+
 ---
 
 # UI SPECIFICATIONS
@@ -15,82 +17,72 @@ This document defines:
 
 ---
 
-# DESIGN SYSTEM
+# DESIGN SYSTEM (IMPLEMENTED)
 
 ## Color Palette
 
-**Research-Based Choice**: Light, professional e-commerce theme with trust-building colors
+**Implemented Choice**: Deep Teal and Warm Amber theme for trust and professionalism
 
-### Primary Colors
+### Primary Colors (Implemented)
 ```
-Primary Blue:     #2563EB  (Trust, professionalism - used for CTAs, links)
-Primary Hover:    #1D4ED8  (Darker blue for hover states)
-Primary Light:    #DBEAFE  (Light blue for backgrounds, badges)
-```
-
-### Secondary Colors
-```
-Secondary Orange: #F97316  (Energy, urgency - used for discounts, sales)
-Secondary Hover:  #EA580C  (Darker orange for hover)
-Secondary Light:  #FFEDD5  (Light orange for discount badges)
+Primary Teal:     #0F766E  (HSL: 167 65% 26%) - Brand color, headers, links
+Primary Hover:    #0D6560  (Darker teal for hover states)
+Primary Light:    #CCFBF1  (Teal 100 for backgrounds)
+Primary Foreground: #FFFFFF (Text on primary background)
 ```
 
-### Neutral Colors
+### Accent Colors (Implemented)
 ```
-Gray 50:   #F9FAFB  (Lightest - page backgrounds)
-Gray 100:  #F3F4F6  (Card backgrounds, input backgrounds)
-Gray 200:  #E5E7EB  (Borders, dividers)
-Gray 300:  #D1D5DB  (Disabled states)
-Gray 400:  #9CA3AF  (Placeholder text)
-Gray 500:  #6B7280  (Secondary text)
-Gray 700:  #374151  (Body text)
-Gray 900:  #111827  (Headings, primary text)
+Accent Amber:     #F59E0B  (HSL: 38 92% 50%) - CTAs, discount badges
+Accent Hover:     #D97706  (Darker amber for hover)
+Accent Light:     #FEF3C7  (Amber 100 for backgrounds)
+Accent Foreground: #171717 (Text on accent background)
 ```
 
-### Semantic Colors
+### Semantic Colors (Implemented)
 ```
-Success Green:  #10B981  (Success messages, in-stock indicators)
-Warning Yellow: #F59E0B  (Warnings, low stock)
+Success Green:  #22C55E  (Discount percentages, success messages)
+Warning Amber:  #F59E0B  (Warnings)
 Error Red:      #EF4444  (Errors, delete actions)
-Info Blue:      #3B82F6  (Info messages)
 ```
 
-### Background
+### Neutral Colors (Implemented)
 ```
-Page Background:      #FFFFFF (White - clean, light theme)
-Card/Section BG:      #F9FAFB (Very light gray)
-Input Background:     #FFFFFF with Gray 200 border
+Background:       #FFFFFF  (Page background)
+Foreground:       #171717  (Primary text)
+Muted:            #F5F5F5  (Secondary backgrounds)
+Muted Foreground: #737373  (Secondary text, placeholders)
+Border:           #E5E5E5  (Borders, dividers)
 ```
 
-**Rationale**: 
-- Blue builds trust (commonly used in e-commerce: Amazon, Flipkart)
-- Orange creates urgency for discounts
-- Light backgrounds reduce eye strain, feel clean and modern
-- High contrast for accessibility
+### Brand Color Scales (Available)
+Full teal and amber color scales (50-900) defined in CSS:
+- `brand-teal-50` to `brand-teal-900`
+- `brand-amber-50` to `brand-amber-900`
 
-**Easy Color Customization**:
-- Use CSS variables or Tailwind config for all colors
-- Define once in theme config, use throughout app
-- Can swap entire palette by changing config
+**Rationale for Change from Original Blue/Orange Spec**:
+- Teal (#0F766E) chosen over Blue (#2563EB) for more distinctive brand identity
+- Amber (#F59E0B) provides warmer, inviting feel
+- Green (#22C55E) for discounts - industry standard
+- All colors defined in `globals.css` as CSS custom properties (HSL format)
 
 ---
 
-## Typography
+## Typography (IMPLEMENTED)
 
-**Recommendation**: System font stack for performance, with Google Fonts fallback
-
-### Font Families
+### Font Stack: System Fonts Only
 ```css
-/* Primary Font - Sans Serif (clean, modern) */
---font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 
-                'Roboto', sans-serif;
-
-/* Monospace (for SKU, codes) */
---font-mono: 'Courier New', monospace;
+font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
+             "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", 
+             sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 ```
 
-**Alternative**: If using Next.js font optimization:
-- Primary: `next/font/google` with Inter or Poppins
+**Rationale for System Fonts** (changed from Inter/Google Fonts):
+1. ✅ Zero load time - fonts already on user's device
+2. ✅ Native look - feels familiar on each platform
+3. ✅ Performance - no network requests for font files
+4. ✅ Easy customization - can switch later by changing one variable
+5. ✅ Accessibility - respects users' system font preferences
 - Automatically optimizes font loading
 
 ### Font Sizes & Line Heights
@@ -206,103 +198,116 @@ XL:       0 20px 25px rgba(0,0,0,0.1),         - Sticky headers
 
 **Layout**:
 ```
+## 1. Header / Navigation Bar (IMPLEMENTED)
+
+### Desktop Header (1024px+)
+
+**Layout** (Implemented):
+```
 ┌──────────────────────────────────────────────────────────────┐
-│ [Logo]    [Categories ▼]  [Search Bar...........]  [Wishlist] [Login/Profile ▼] │
-│  New Guru                                            ♥ (3)      Hi, User          │
+│ [Logo]      [Search Bar......................]  [Wishlist] [Login/Profile ▼] │
+│  New Guru                                          ♥         Hi, User          │
 └──────────────────────────────────────────────────────────────┘
 ```
 
-**Specifications**:
+**Specifications** (Implemented):
 - Height: 64px (4rem)
 - Background: White (#FFFFFF)
-- Border Bottom: 1px solid Gray 200
+- Border Bottom: 1px solid border color
 - **Sticky**: Yes - stays at top when scrolling (position: sticky, top: 0, z-index: 50)
-- Box Shadow: Small shadow when scrolled past threshold
+- Box Shadow: Appears when scrolled past threshold
 
-**Components**:
+**Components** (Implemented):
 
 1. **Logo**
-   - Position: Left, padding-left: 32px
-   - Size: Height 40px, width auto
-   - Text: "New Guru Enterprises" (if no image logo)
-   - Font: h4 size, Semibold, Primary color
+   - Position: Left
+   - Text: "New Guru" (styled brand name)
+   - Font: h4 size, Semibold, Primary teal color
    - Clickable → Navigate to homepage
 
-2. **Categories Dropdown**
-   - Button: "Categories" with chevron-down icon
-   - Hover → Show dropdown menu
-   - Dropdown shows main categories (Level 0)
-   - Each category hover → Show subcategories flyout (if has children)
-   - Padding: 16px vertical
+2. **Categories Dropdown** - **NOT IMPLEMENTED**
+   - Categories shown on homepage only (simplified design decision)
+   - Removes complexity from header
 
-3. **Search Bar**
-   - Width: 400px (expand to 500px on focus)
+3. **Search Bar** (Implemented)
+   - Centered, flexible width
    - Height: 40px
    - Background: Gray 100
-   - Border: 1px solid Gray 200 (focus: Primary Blue)
+   - Border: 1px solid border (focus: Primary teal)
    - Border radius: Full (pill shape)
    - Placeholder: "Search for products..."
-   - Icon: Search icon (magnifying glass) on right side
-   - On Enter or Click icon → Navigate to search results
+   - Icon: Search icon on right side
+   - On Enter → Navigate to search results (to be implemented in Step 11)
 
-4. **Wishlist Icon**
+4. **Wishlist Icon** (Implemented)
    - Icon: Heart outline
-   - Badge: Circle with count (e.g., "3") if items > 0
-   - Badge color: Orange background, white text
-   - Click → Navigate to /wishlist
-   - If not logged in: Redirect to login
+   - Click → Navigate to /wishlist (or login if not authenticated)
+   - Badge: Not yet implemented (Phase 1 wishlist step pending)
 
-5. **User Menu**
-   - If NOT logged in: "Login" button (text + person icon)
+5. **User Menu** (Implemented)
+   - If NOT logged in: "Login" text button with User icon
    - If logged in: 
-     - "Hi, [First Name]" with avatar/icon
+     - "Hi, [First Name]" with User icon
      - Dropdown on click:
-       - Profile
-       - My Wishlist
-       - Orders (Phase 2)
+       - Wishlist
        - Logout
-   - Admin users see additional: "Admin Panel" link
+       - Admin Panel (if admin user)
 
-### Mobile Header (< 640px)
+### Mobile Header (< 768px) (IMPLEMENTED)
 
-**Layout**:
+**Layout** (Implemented - Two-row design):
 ```
-┌─────────────────────────────────┐
-│ [☰]  New Guru        [🔍] [♥] [👤] │  ← Top Bar (56px height)
-└─────────────────────────────────┘
+┌────────────────────────────────────┐
+│ [☰]  New Guru Enterprises  [♥] [👤] │  ← Row 1 (56px)
+├────────────────────────────────────┤
+│ [Search Bar (full width)........]  │  ← Row 2 (search)
+└────────────────────────────────────┘
 ```
 
-**Specifications**:
-- Height: 56px
+**Specifications** (Implemented):
+- Total Height: ~110px (two rows)
+- Row 1: 56px - Menu, logo, icons
+- Row 2: Full-width search bar
 - Sticky: Yes
-- Background: White, shadow-small
+- Background: White, shadow when scrolled
 
-**Components**:
+**Rationale for Two-Row Mobile Layout**:
+- Full logo visibility
+- Full-width search bar (easier to tap)
+- Better UX for primary search use case
+
+**Components** (Implemented):
 
 1. **Hamburger Menu** (☰)
-   - Left side, tappable area: 44x44px
-   - Opens side drawer with:
-     - Categories (expandable tree)
-     - Links: Home, Wishlist, Profile, Login/Logout
+   - Left side, opens MobileNav Sheet
+   - Sheet slides from LEFT (natural thumb reach)
 
 2. **Logo/Brand Name**
-   - Center or left after hamburger
-   - Font size: 1.125rem, Semibold
+   - Center
+   - Full store name: "New Guru Enterprises"
 
 3. **Icon Group** (Right side)
-   - Search icon → Opens full-screen search overlay
-   - Wishlist icon (with badge if count > 0)
-   - User icon → Opens login or profile menu
+   - Wishlist icon (heart)
+   - User icon → Login page or profile menu
 
-**Mobile Search Overlay**:
-- When search icon tapped: Full-screen overlay appears
-- Search input at top (auto-focus)
-- Close button (X) on right
-- Below input: Recent searches (Phase 2) or categories
+4. **Search Bar** (Row 2)
+   - Full width below header row
+   - Same styling as desktop
+
+### Mobile Navigation Drawer (IMPLEMENTED)
+
+**Implementation**: shadcn/ui Sheet component
+
+**Contents**:
+- User profile section (shows logged-in status)
+- Category list with navigation
+- Quick links: Home, Wishlist, Profile, Orders
+- Admin Panel link (visible for admin users)
+- Store contact info at bottom
 
 ---
 
-## 2. Footer
+## 2. Footer (IMPLEMENTED)
 
 ### Desktop Footer
 
@@ -370,7 +375,7 @@ XL:       0 20px 25px rgba(0,0,0,0.1),         - Sticky headers
 
 **Specifications**:
 - Container: Background White, border 1px Gray 200, border-radius default
-- Hover: Shadow-medium, subtle scale (1.02), border Primary Blue
+- Hover: Shadow-medium, subtle scale (1.02), border Primary Teal
 - Cursor: Pointer on entire card
 - Image: 100% width, aspect-ratio 1/1, object-fit cover
 - Padding inside card: 12px
@@ -384,8 +389,8 @@ XL:       0 20px 25px rgba(0,0,0,0.1),         - Sticky headers
    - Selling Price: Gray 900, Bold, font-lg (1.125rem)
    - Space between: 8px
 5. **Discount Badge**: 
-   - Background: Secondary Light (orange tint)
-   - Text: Secondary Orange, Semibold, font-small
+   - Background: Accent Light (amber tint)
+   - Text: Accent Amber, Semibold, font-small
    - Padding: 4px 8px, border-radius small
    - Position: Below prices OR top-right corner of image (floating)
 
@@ -464,11 +469,11 @@ XL:       0 20px 25px rgba(0,0,0,0.1),         - Sticky headers
 
 ### Primary Button (CTAs)
 ```css
-Background: Primary Blue (#2563EB)
+Background: Primary Teal (#0F766E)
 Text: White, Medium weight
 Padding: 12px 24px (default), 10px 20px (small), 14px 28px (large)
 Border-radius: Default (6px)
-Hover: Background → Primary Hover (#1D4ED8), slight shadow
+Hover: Background → Primary Hover (#0D6660), slight shadow
 Active: Scale 0.98
 Disabled: Background Gray 300, cursor not-allowed
 ```
@@ -478,10 +483,10 @@ Disabled: Background Gray 300, cursor not-allowed
 ### Secondary Button
 ```css
 Background: White or transparent
-Border: 1px solid Primary Blue
-Text: Primary Blue, Medium weight
+Border: 1px solid Primary Teal
+Text: Primary Teal, Medium weight
 Padding: Same as primary
-Hover: Background Primary Light (#DBEAFE)
+Hover: Background Primary Light (#CCFBF1)
 ```
 
 **Usage**: Cancel, Secondary actions, View Details
@@ -521,7 +526,7 @@ Background: White
 Font: Base size, Gray 700
 
 Focus:
-  Border: Primary Blue
+  Border: Primary Teal
   Outline: 2px Primary Light (offset 2px)
   
 Error:
@@ -546,7 +551,7 @@ Disabled:
 ### Checkbox & Radio
 - Size: 20x20px
 - Border: 2px solid Gray 300
-- Checked: Background Primary Blue, white checkmark
+- Checked: Background Primary Teal, white checkmark
 - Border-radius: Small (checkbox), Full (radio)
 
 ### Label
@@ -658,7 +663,7 @@ Size:
   Default: 32x32px (button loading)
   Large: 48x48px (page loading)
 
-Color: Primary Blue
+Color: Primary Teal
 Animation: Rotate 360deg, 1s linear infinite
 
 Usage:
@@ -670,7 +675,7 @@ Usage:
 **Spinner Component**:
 ```html
 <div class="spinner">
-  <svg class="animate-spin h-8 w-8 text-blue-600">
+  <svg class="animate-spin h-8 w-8 text-teal-700">
     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.25"/>
     <path fill="currentColor" d="..." opacity="0.75"/>
   </svg>
@@ -688,8 +693,8 @@ Usage:
 
 ### Discount Badge
 ```css
-Background: Secondary Light (#FFEDD5)
-Text: Secondary Orange (#F97316), Semibold
+Background: Accent Light (#FEF3C7)
+Text: Accent Amber (#D97706), Semibold
 Font: Small (14px)
 Padding: 4px 8px
 Border-radius: Small
@@ -709,7 +714,7 @@ Font: Tiny (12px), Medium weight
 ### Product Badge (Featured, New, etc.)
 ```css
 Position: Top-left of product image (absolute)
-Background: Primary Blue or Success Green
+Background: Primary Teal or Success Green
 Text: White, Tiny font, Bold
 Padding: 4px 8px
 Border-radius: Small (bottom-right only)
@@ -734,7 +739,7 @@ Width:
 Background: 
   Success: Success Green
   Error: Error Red
-  Info: Primary Blue
+  Info: Primary Teal
   Warning: Warning Yellow
 
 Text: White (except warning: Gray 900)
@@ -762,7 +767,7 @@ Home > Electronics > Mixer Grinder > Product Name
 ```css
 Font: Small (14px)
 Color: Gray 500
-Links: Hover → Primary Blue, underline
+Links: Hover → Primary Teal, underline
 Separator: "/" or ">" in Gray 400
 Current page: Gray 900, not clickable
 
@@ -865,7 +870,7 @@ Example mobile: ... > Mixer Grinder > Product Name
 **Pagination** (if used):
 - Center-aligned
 - Previous/Next buttons + page numbers
-- Style: Primary Blue for active page
+- Style: Primary Teal for active page
 
 ---
 
@@ -928,7 +933,7 @@ Example mobile: ... > Mixer Grinder > Product Name
 **Menu Items**:
 - Padding: 12px 20px
 - Font: Base, Medium
-- Active: Background Primary Light, text Primary Blue, left border 3px Primary Blue
+- Active: Background Primary Light, text Primary Teal, left border 3px Primary Teal
 - Hover: Background Gray 100
 - Icon + Text layout
 
@@ -1067,7 +1072,7 @@ Example mobile: ... > Mixer Grinder > Product Name
 
 ### Keyboard Navigation
 - All interactive elements: Focusable with Tab
-- Focus indicators: Visible outline (2px Primary Blue)
+- Focus indicators: Visible outline (2px Primary Teal)
 - Modal: Trap focus inside, Escape to close
 - Dropdown menus: Arrow keys to navigate
 

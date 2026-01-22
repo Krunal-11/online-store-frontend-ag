@@ -1,5 +1,7 @@
 Complete API contracts and mock data specifications - reference this when implementing API integration and creating mock responses.
 
+**Last Updated**: 2026-01-22 (Updated to reflect Phase 1 implementation through Step 9)
+
 ---
 
 # API REQUIREMENTS
@@ -13,50 +15,74 @@ This document provides:
 - Error handling patterns
 - Authentication requirements
 
+**Implementation Status**: ✅ Implemented | ⬜ Not Started
+
 ---
 
-# API ARCHITECTURE
+# API ARCHITECTURE (IMPLEMENTED)
 
 ## Base URL
 
-**Phase 1 (Mock APIs)**:
+**Phase 1 (Mock APIs)** - Currently Active:
 ```
 http://localhost:3000/api
 ```
 
-**Phase 2 (Real Backend)**:
+**Phase 2 (Real Backend)** - Future:
 ```
 https://api.newguruenterprises.com/v1
 ```
 
-## Authentication
+**Environment Variable**: `NEXT_PUBLIC_API_URL` (defaults to `/api`)
 
-**Method**: JWT (JSON Web Token) based authentication
+## Authentication (IMPLEMENTED)
 
-**Token Storage**:
-- Recommended: httpOnly cookies (secure)
-- Alternative: localStorage with XSS precautions
+**Method**: Mock JWT (Base64 JSON token)
 
-**Auth Flow**:
-1. User sends OTP request → Backend generates OTP
-2. User verifies OTP → Backend returns JWT token
-3. Frontend stores token
-4. All subsequent requests include token in header
+**Token Storage** (Implemented):
+- **localStorage** for Phase 1 simplicity
+- Will migrate to httpOnly cookies for production
+
+**Auth Flow** (Implemented):
+1. User sends OTP request → Mock always succeeds, logs OTP to console
+2. User verifies OTP → Any 6-digit OTP accepted, returns mock user + token
+3. Frontend stores token in localStorage
+4. Subsequent requests include token in Authorization header
 
 **Auth Header**:
 ```http
-Authorization: Bearer <jwt_token>
+Authorization: Bearer <base64_token>
 ```
 
-**Token Expiry**: 30 days (configurable)
+**Token Format** (Mock): Base64-encoded JSON with userId + timestamp
+**Token Expiry**: 30 days
+
+---
+
+# IMPLEMENTED ENDPOINTS SUMMARY
+
+| Route | Method | Purpose | Status |
+|-------|--------|---------|--------|
+| `/api/auth/send-otp` | POST | Send OTP (mock) | ✅ |
+| `/api/auth/verify-otp` | POST | Verify OTP, return token | ✅ |
+| `/api/auth/me` | GET | Get current user | ✅ |
+| `/api/auth/logout` | POST | Logout | ✅ |
+| `/api/auth/profile` | PUT | Update user profile | ✅ |
+| `/api/categories` | GET | Get all categories (tree) | ✅ |
+| `/api/categories/[slug]` | GET | Single category + breadcrumb | ✅ |
+| `/api/products` | GET | List products (search, filters, sort) | ✅ |
+| `/api/products/[slug]` | GET | Product details with variants | ✅ |
+| `/api/brands` | GET | List all brands | ✅ |
+| `/api/banners` | GET | Active banners | ✅ |
+| `/api/wishlist` | GET/POST/DELETE | Wishlist operations | ✅ |
 
 ---
 
 # USER-FACING ENDPOINTS
 
-## 1. AUTHENTICATION APIs
+## 1. AUTHENTICATION APIs ✅
 
-### 1.1 Send OTP
+### 1.1 Send OTP ✅
 
 **Endpoint**: `POST /api/auth/send-otp`
 
@@ -65,14 +91,12 @@ Authorization: Bearer <jwt_token>
 **Request Body**:
 ```json
 {
-  "phone": "+919876543210",
-  "email": "user@example.com"  // Optional
+  "phone": "+919876543210"
 }
 ```
 
 **Validation**:
-- Phone: Required, valid format (+91 followed by 10 digits)
-- Email: Optional, valid email format
+- Phone: Required, valid format
 
 **Success Response** (200):
 ```json
@@ -742,7 +766,7 @@ Authorization: Bearer <jwt_token>
       "clickAction": {
         "type": "category",
         "target": "mixer-grinder",
-        "url": "/categories/mixer-grinder"
+        "url": "/category/mixer-grinder/products"
       },
       "displayOrder": 2,
       "isActive": true

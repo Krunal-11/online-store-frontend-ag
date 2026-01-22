@@ -1,5 +1,7 @@
 Comprehensive feature specifications organized by implementation priority - reference this when implementing specific functionality.
 
+**Last Updated**: 2026-01-22 (Updated to reflect Phase 1 implementation through Step 9)
+
 ---
 
 # FEATURES DETAILED
@@ -9,20 +11,21 @@ Comprehensive feature specifications organized by implementation priority - refe
 - **Phase 1 features** = Must implement fully with all details
 - **Phase 2 features** = Document awareness only, basic/demo implementation acceptable
 - Each feature includes: Purpose, Components, Behavior, and Implementation Notes
+- **Implementation Status**: ✅ Implemented | 🟡 Partial | ⬜ Not Started
 
 ---
 
 # PHASE 1 FEATURES (FULL IMPLEMENTATION REQUIRED)
 
-## 1. HOMEPAGE
+## 1. HOMEPAGE ✅
 
 **Purpose**: Entry point that showcases products and enables navigation
 
-### 1.1 Hero Banner Carousel
+### 1.1 Hero Banner Carousel ✅
 
 **Components**:
-- Rotating banner carousel (auto-play + manual controls)
-- Next/Previous arrows
+- Rotating banner carousel with auto-play
+- Next/Previous arrows (desktop only)
 - Dot indicators for slide position
 - Responsive images (desktop and mobile versions)
 
@@ -33,34 +36,60 @@ Each banner can link to one of:
 - Custom product collection (e.g., "40% off items")
 - External URL (if needed)
 
-**Implementation Notes**:
-- Auto-rotate every 5 seconds (configurable)
-- Pause on hover
-- Swipe support on mobile
+**Implementation Notes** (Implemented):
+- Uses `embla-carousel-react` with `embla-carousel-autoplay` plugin
+- Auto-rotate every 5 seconds
+- **No pause on hover** (simplified implementation)
+- Swipe support on mobile via embla
 - Minimum 2 banners, maximum 10 (configurable)
 - Load active banners only (status = ACTIVE)
+- Skeleton loader during fetch
+- Desktop: 21:7 aspect ratio with arrows
+- Mobile: 16:9 aspect ratio, swipe only
 
-### 1.2 Category Display Section
+### 1.2 Category Display Section ✅
 
-**Layout**: Grid of category cards
+**Layout**: Grid of category cards with drill-down functionality
 
 **Each Category Card Shows**:
-- Category image (from S3)
+- Category image (placeholder URLs via placehold.co in Phase 1)
 - Category name
-- Optional: Product count (e.g., "25 products")
+- **No product count** (simplified design per user request)
 
-**Behavior**:
-- Click on card → Navigate to category page
-- Show only Level 0 (main/parent) categories
-- Display in order defined by `display_order` field
-- Show only active categories (status = ACTIVE)
+**Behavior** (Implemented):
+- **Level 0 categories**: Always visible at top of grid
+- **Click category WITH subcategories**: Subcategories appear BELOW the main grid (nested)
+- **Click same category again**: Collapse the subcategories section
+- **Click category WITHOUT subcategories**: Navigate to `/category/{slug}/products`
+- **"View All Products" button**: Appears when subcategories expanded
+
+**Selected State Indicator**:
+- Light teal background (`bg-primary/10`) + teal border (`ring-2 ring-primary`)
+- Chevron icon rotates 180° when expanded
+
+**Nesting Depth** (max 3 levels: 0, 1, 2):
+| Level | Behavior |
+|-------|----------|
+| Level 0 (Main) | Always visible, expandable |
+| Level 1 (Sub) | Shown below Level 0 when parent expanded |
+| Level 2 (Sub-sub) | Shown below Level 1, clicking navigates to products |
 
 **Responsive Grid**:
 - Mobile: 2 columns
-- Tablet: 3 columns
-- Desktop: 4-6 columns
+- Tablet (md): 3-4 columns
+- Desktop (lg+): 6 columns
 
-### 1.3 Store Information Footer
+### 1.3 Featured Products Section ✅
+
+**Purpose**: Showcase featured products on homepage
+
+**Implementation**:
+- Uses `ProductCard` component in responsive grid
+- Fetches featured products via `useFeaturedProducts` hook
+- Skeleton loaders during loading state
+- Shows products where `isFeatured: true`
+
+### 1.4 Store Information Footer ✅
 
 **Display**:
 - Store name: "New Guru Enterprises"
@@ -69,57 +98,54 @@ Each banner can link to one of:
 - Tagline: "Wide Range of home appliances and kitchenware"
 - "Home delivery available" badge/message
 
-**Optional Elements**:
-- Social media links (if provided)
-- Business hours
-- Map link
-
 ---
 
-## 2. CATEGORY NAVIGATION & PRODUCT BROWSING
+## 2. CATEGORY NAVIGATION & PRODUCT BROWSING ✅
 
-### 2.1 Category Hierarchy Navigation
+### 2.1 Category Hierarchy Navigation ✅
 
 **Structure**: Up to 3 levels
 - **Level 0**: Main categories (e.g., "Electronics", "Kitchen Essentials")
 - **Level 1**: Subcategories (e.g., "Mixer Grinder", "Pressure Cooker")
 - **Level 2**: Sub-subcategories (e.g., "3 Jar", "Steel Base")
 
-**Navigation Flow**:
+**Navigation Flow** (Implemented):
 ```
-Homepage → Click "Electronics" → 
-Category Page shows subcategories ("Mixer Grinder", etc.) → 
-Click "Mixer Grinder" → 
-Shows sub-subcategories ("3 Jar", "4 Jar") OR products if no more subcategories →
-Click "3 Jar" → 
-Always shows products at this level
+Homepage → Click "Electronics" (with subcategories) → 
+Subcategories appear BELOW main grid (not new page) →
+Click "Mixer Grinder" (with subcategories) →
+Level 2 subcategories appear below →
+Click "3 Jar" (no subcategories) →
+Navigate to /category/3-jar/products
 ```
 
-**Category Page Components**:
+**URL Structure** (Implemented):
+- Category products: `/category/{slug}/products`
+- Flat slug-only (not nested paths)
+
+**Category Products Page Components**:
 - Breadcrumb navigation (e.g., "Home > Electronics > Mixer Grinder")
-- Category title and description (if available)
-- If has subcategories: Display subcategory cards (same style as homepage)
-- If no subcategories OR at deepest level: Display product grid
-- Optional "View All Products" button to show all products in this category tree
+- Category title
+- Product grid with infinite scroll
+- Sort and brand filter controls
 
 **Implementation Notes**:
-- Use category `path` field to determine hierarchy
-- Use category `level` to know depth
-- Fetch subcategories where `parent_id` = current category ID
-- Responsive layout (same grid as homepage categories)
+- `useCategory(slug)` hook returns category, subcategories, and breadcrumb
+- Products page fetches from `/api/products?categoryId={id}`
 
-### 2.2 Product Grid Display
+### 2.2 Product Grid Display ✅
 
 **Purpose**: Show products in browseable tile format
 
 **Product Tile Components** (each tile):
 ```
 ┌─────────────────────┐
-│   Product Image     │ ← Primary image
+│ [Discount Badge]  ♥ │ ← Top corners
+│   Product Image     │ ← Primary image, hover zoom
 ├─────────────────────┤
-│ Brand Name          │ ← Small, gray text
+│ BRAND NAME          │ ← Small, uppercase, gray text
 │ Product Name        │ ← Bold, 2 lines max
-│ ★★★★☆ (120)        │ ← Rating (if available)
+│ ★ 4.5 (120)        │ ← Rating (if available)
 │ ₹3000  ₹2500        │ ← MRP (strikethrough) + Selling Price
 │ 16% OFF             │ ← Discount badge (green)
 └─────────────────────┘
@@ -127,63 +153,76 @@ Always shows products at this level
 
 **Tile Behavior**:
 - Click anywhere on tile → Navigate to product detail page
-- Hover effect (subtle scale or shadow)
+- Hover effect: Image zoom, text color change
 - Lazy load images as user scrolls
 
 **Grid Specifications**:
-- Mobile: 2 columns with small gutters
-- Tablet: 3 columns
-- Desktop: 4 columns (or 5-6 depending on container width)
+- Mobile: 2 columns
+- Tablet (md): 3 columns
+- Desktop (lg): 4 columns
 - Gap between tiles: 16px
 
-**Variant Handling**:
-- Each variant appears as separate tile in grid
-- Example: 2L cooker, 3L cooker, 5L cooker = 3 tiles
-- Tile shows variant's image, price, name
-- All link to same product detail page but with variant pre-selected
+**Pagination** (Implemented):
+- **Infinite scroll** using Intersection Observer
+- SWR Infinite for paginated data fetching
+- 30 products per page (configurable via `NEXT_PUBLIC_PRODUCTS_PER_PAGE`)
+- 200px load trigger margin before reaching end
 
 **Empty State**:
-- If no products: "No products found in this category"
-- CTA button: "Browse All Products" or "Go to Homepage"
+- Icon, message: "No products found"
+- Customizable for different contexts (category, search)
 
-**Implementation Notes**:
-- Fetch products where `category_id` matches current category
-- Include child categories' products (e.g., viewing "Mixer Grinder" shows products from "3 Jar" and "4 Jar" subcategories)
-- Use `status = 'ACTIVE'` filter
-- Pagination: Load 20-24 products per page initially
-- Infinite scroll or "Load More" button (agent's choice)
+### 2.3 Product Grid Controls ✅
+
+**Components**:
+- Sticky bar below main header on scroll
+- Product count display
+- Sort dropdown
+- Brand filter dropdown (when applicable)
+- "Clear filters" button when filters active
+
+**Sort Options** (Implemented):
+| Value | Label | Logic |
+|-------|-------|-------|
+| `relevance` | Relevance | Featured first, then by rating (default) |
+| `price_asc` | Price: Low to High | Selling price ascending |
+| `price_desc` | Price: High to Low | Selling price descending |
+| `rating` | Customer Rating | Average rating descending |
+| `discount` | Discount | Discount percentage descending |
+| `newest` | Newest First | Created date descending |
+
+**URL State**: Sort and brand filters stored in query params (?sort=, ?brand=)
 
 ---
 
-## 3. PRODUCT DETAIL PAGE
+## 3. PRODUCT DETAIL PAGE ✅
 
 **Purpose**: Show complete product information and enable wishlist action
 
-**URL Structure**: `/products/[slug]` or `/products/[id]`  
-*(Agent decision: slug preferred for SEO)*
+**URL Structure**: `/products/[slug]?variant={variant-slug}`
 
-### 3.1 Image Gallery Section
+### 3.1 Image Gallery Section ✅
 
-**Components**:
-- Large primary image display (responsive, fills container)
-- Thumbnail strip (below or side of main image)
+**Components** (Implemented - Hybrid Gallery):
+- **Mobile (< 768px)**: Full-width carousel with swipe, dot indicators
+- **Desktop (≥ 768px)**: Large primary image with thumbnail strip below
 - Click thumbnail → Change main image
-- Responsive: Thumbnails below on mobile, side on desktop
+- Skeleton loader during image load
 
 **Image Behavior**:
-- Show images from `product_images` table
-- Order by `display_order` field
-- Primary image (is_primary = true) shown first
-- Zoom functionality: Phase 2 (not required in Phase 1)
+- Show images from product's image array
+- Order by `displayOrder` field
+- Primary image (`isPrimary: true`) shown first
+- **Zoom functionality**: Not implemented in Phase 1
 
-### 3.2 Product Information Section
+### 3.2 Product Information Section ✅
 
 **Display Elements**:
 
 1. **Brand Name** (small, above product name)
-2. **Product Name** (large heading, from product_groups.name)
-3. **Rating Display** (stars + count, e.g., "★★★★☆ 4.5 (120 reviews)")
-   - Phase 1: Display only (API provides rating data)
+2. **Product Name** (large heading)
+3. **Rating Display** (single star icon + rating number + review count)
+   - Phase 1: Display only
    - Phase 2: Clickable to view reviews
 4. **Pricing Block**:
    ```
@@ -192,112 +231,91 @@ Always shows products at this level
    ```
    - MRP: Gray, strikethrough
    - Selling Price: Large, bold, primary color
-   - Discount: Green badge/pill
-5. **Product Description** (from product_groups.description)
-   - Multiple paragraphs if needed
-   - Rich text formatting preserved
-6. **Key Specifications** (from products.attributes JSON)
-   ```
-   Size:        2L
-   Material:    Stainless Steel
-   Warranty:    5 years
-   Power:       750W
-   ```
-   - Display as table or key-value list
-   - Parse JSON attributes and format nicely
+   - Discount: Success green text
+   - Uses `Intl.NumberFormat` for INR formatting
+5. **Wishlist Button**: Heart icon + "Add to Wishlist" text
 
-### 3.3 Variant Selector
+### 3.3 Variant Selector ✅
 
-**When to Show**: If product_group has multiple variants (count > 1)
+**When to Show**: If product has multiple variants (count > 1)
 
-**Display Format**: Button group or dropdown
+**Display Format**: Pill buttons (implemented)
 ```
-Preferred: Button Pills
-┌────┬────┬────┐
-│ 2L │ 3L │ 5L │
-└────┴────┴────┘
-  ↑ Selected (highlighted)
+[ 2 Litre ] [ 3 Litre ] [ 5 Litre ]
+       ↑ Selected (teal background)
 ```
 
 **Variant Button Shows**:
-- Variant name (e.g., "2L", "Red", "Medium")
-- Variant price (small, below name) - optional
+- Variant name (e.g., "2 Litre", "Red", "750W 3 Jar")
+- Price difference indicator (optional, future)
 
 **Selection Behavior**:
-- Click variant → Update displayed information:
+- Click variant → Update displayed information instantly:
   - Images (switch to this variant's images)
   - Price (MRP and selling price)
-  - SKU (display if showing)
-  - Attributes (variant-specific attributes)
-- Default selection: `is_default_variant = true` OR first variant in list
-- Highlight selected variant (border, background color, checkmark)
+  - Attributes (variant-specific)
+- Default selection: First variant OR variant from URL parameter
+- URL updates with variant: `?variant={variant-slug}`
 
-**Implementation Notes**:
-- Fetch all variants for this `product_group_id`
-- Filter by `status = 'ACTIVE'`
-- When URL contains variant ID, pre-select that variant
+**Variant Slug Format**: Lowercase, hyphenated (e.g., "3-litre", "750w-3-jar")
 
-### 3.4 Action Buttons
+### 3.4 Action Buttons ✅
 
 **Add to Wishlist Button**:
 - Icon: Heart (outline when not in wishlist, filled when added)
-- Text: "Add to Wishlist" or "Saved" (if already in wishlist)
-- Position: Prominent, near price
+- Text: "Add to Wishlist" or "Saved to Wishlist"
+- Position: Prominent, in product info section
 - Click behavior:
-  - **If NOT logged in**: Redirect to login page with return URL = current product page
-  - **If logged in**: 
-    - Add to wishlist via API
-    - Show success toast: "Added to wishlist"
-    - Button changes to "Saved" with filled heart
-    - If already in wishlist: Remove from wishlist, show "Removed from wishlist"
+  - **If NOT logged in**: Redirect to login page with return URL
+  - **If logged in**: Add to wishlist via API, show toast notification
 
 **Phase 2 Buttons** (not in Phase 1):
 - "Add to Cart"
 - "Buy Now"
 
-### 3.5 Additional Information (Expandable Sections)
+### 3.5 Additional Information (Accordion) ✅
 
-**Accordion/Tab Layout**:
+**Accordion Layout** (using shadcn/ui Accordion):
 
 1. **Product Details** (expanded by default)
    - Full description
-   - All specifications from attributes
+   - All specifications from attributes (key-value pairs)
 
 2. **Delivery Information**
    - Static content: "Home delivery available. Contact us for delivery details."
    - Store address and phone number
-   - Phase 2: Pincode-based delivery check
 
 3. **Return & Exchange Policy**
-   - Static content (provide standard policy text)
-   - Phase 2: Product-specific policies
+   - Static content (standard policy text)
 
-**Implementation**: Accordion (one section open at a time) or Tabs (agent's choice)
+### 3.6 Related Products Section ✅
 
-### 3.6 Related Products Section
+**Purpose**: Show similar products
 
-**Purpose**: Show similar or complementary products
+**Implementation** (Phase 1):
+- Horizontal scrollable carousel using embla-carousel
+- Shows products from same category, excluding current product
+- Limited to 8 products
+- Uses ProductCard component (smaller variant)
 
-**Phase 1 Implementation** (Simple):
-- Show 4-6 products from same category
-- OR same brand
-- Exclude current product
-- Display as horizontal scrollable carousel or grid
-
-**Phase 2 Enhancement**:
-- AI-based recommendations
-- "Frequently bought together"
-- Personalized based on user history
-
-**Display**: Mini product tiles (similar to grid tiles but smaller)
+**Display**: 
+- Desktop: 4 visible products with prev/next arrows
+- Mobile: 2 visible products, swipe to navigate
 
 ---
 
-## 4. WISHLIST
+## 4. WISHLIST ⬜
 
 ### 4.1 Access Control
 
 **Guest Users**:
+- Can browse products
+- Clicking "Add to Wishlist" → Redirect to login page
+- After login → Redirect back to original page
+
+**Logged-in Users**:
+- Can add/remove items freely
+- Wishlist persists across sessions
 - Can browse products
 - Clicking "Add to Wishlist" → Redirect to login page
 - After login → Redirect back to original page
@@ -349,7 +367,7 @@ Preferred: Button Pills
 
 ---
 
-## 5. USER AUTHENTICATION
+## 5. USER AUTHENTICATION ✅
 
 ### 5.1 Login Flow (Phone OTP)
 
@@ -358,93 +376,97 @@ Preferred: Button Pills
 - Attempt to add to wishlist while not logged in
 - Access user-specific pages (profile, orders, wishlist)
 
+**Implementation**: Dedicated login page at `/login` (not modal)
+
 **Step 1: Phone Input**
-- Modal or dedicated page (agent's choice)
+- Dedicated page (`/login`)
 - Form fields:
-  - Phone number: Input with country code (+91 prefix auto-filled)
-  - Email: Optional input (stored but not used for auth)
+  - Country code: Dropdown with editable input (default: +91)
+  - Phone number: Numeric only, max 15 digits
 - Validation:
-  - Phone: 10 digits after country code
-  - Email: Valid email format (if provided)
+  - Phone: Required, 6-15 digits after country code
 - Button: "Send OTP"
 - Click → Call API: POST /api/auth/send-otp
 
 **Step 2: OTP Verification**
 - Display after OTP sent successfully
-- Show: "OTP sent to +91XXXXXXXXXX"
-- Form fields:
-  - 6-digit OTP input (auto-focus, numeric only)
-  - Option: 6 separate input boxes or single input
-- "Verify" button
-- "Resend OTP" link (enabled after 30 seconds)
+- Show: "OTP sent to [phone]"
+- Form: 6 individual input boxes (48x56px each)
+- Auto-focus on first box
+- Arrow key navigation between boxes
+- Paste support for full OTP
+- "Verify OTP" button
+- "Resend OTP" link (enabled after 30 seconds countdown)
 - Click Verify → Call API: POST /api/auth/verify-otp
 
-**Step 3: Success**
-- Store session token (JWT or session cookie)
-- If name not set: Ask user to enter name (first-time users)
+**Step 3: New User Name Entry**
+- If `isNewUser: true` from verify response
+- Show name input field
+- User enters name
+- Call API: PUT /api/auth/profile
+- Then proceed to redirect
+
+**Step 4: Success**
+- Store session token (localStorage in Phase 1)
 - Redirect to:
-  - Return URL (if came from product page)
+  - Return URL (if provided via `?returnUrl=`)
   - OR Homepage (default)
-- Show success message: "Welcome, [Name]!"
+  - OR Admin Dashboard (if user is admin)
+- Header updates to show user name
 
 **Error Handling**:
 - Invalid phone number: "Please enter a valid phone number"
 - OTP send failed: "Failed to send OTP. Please try again."
-- Invalid OTP: "Invalid OTP. Please try again."
+- Invalid OTP: "Invalid OTP. Please try again." (red border on inputs)
 - Expired OTP: "OTP expired. Please request a new one."
+
+**Loading States**:
+- Sending OTP: Button disabled, spinner, "Sending OTP..."
+- Verifying: Button disabled, spinner, "Verifying..."
 
 ### 5.2 User Session Management
 
-**Session Storage**:
-- JWT token in httpOnly cookie (recommended for security)
-- OR localStorage (if httpOnly cookies not feasible)
+**Session Storage** (Implemented):
+- **localStorage** for Phase 1 (simpler for mock)
+- Will migrate to httpOnly cookies for production
 
 **Session Persistence**:
 - Keep user logged in across browser sessions
-- Auto-logout after 30 days of inactivity (configurable)
+- Token expiry: 30 days (mock implementation)
 
 **Protected Routes**:
 - Wishlist page
-- Profile page
+- Profile page (Phase 2)
 - Orders page (Phase 2)
-- Any user-specific functionality
 
-**Middleware**:
-- Check authentication on protected routes
-- Redirect to login if not authenticated
-- Preserve return URL for post-login redirect
+**Session Check**:
+- On app mount via `AuthProvider`
+- Calls `/api/auth/me` to validate token
 
-### 5.3 User Profile
+### 5.3 Admin Detection
 
-**Access**: Header menu → "Profile" or user avatar dropdown
+**Implementation**: Admin role determined by phone number
 
-**Editable Fields**:
-- Name (text input)
-- Email (text input)
-- Address (textarea or structured address form)
+| Phone | Role | User |
+|-------|------|------|
+| +919849067667 | ADMIN | Store owner |
+| Any other | USER | Regular customer |
 
-**View-Only Fields**:
-- Phone number (used for authentication, cannot change)
+**Admin Access**:
+- Admin link visible in mobile navigation
+- Header shows Admin Panel link for admin users
 
-**Actions**:
-- "Save Changes" button
-- "Logout" button
+### 5.4 Logout Behavior
 
-**Logout Behavior**:
-- Clear session token
+- Clear session token from localStorage
 - Redirect to homepage
-- Show "Logged out successfully" message
-
-**Phase 2 Additions**:
-- Order history section
-- Saved addresses (multiple addresses)
-- Preferences (notifications, language)
+- Header updates to show "Login" button
 
 ---
 
-## 6. SEARCH FUNCTIONALITY
+## 6. SEARCH FUNCTIONALITY ⬜
 
-### 6.1 Phase 1 Implementation (Basic/Demo)
+### 6.1 Phase 1 Implementation (Basic)
 
 **Purpose**: Allow text-based product search
 

@@ -1,5 +1,7 @@
 Technical stack, performance requirements, and implementation constraints - reference this for setup and architectural decisions.
 
+**Last Updated**: 2026-01-22 (Updated to reflect Phase 1 implementation through Step 9)
+
 ---
 
 # TECHNICAL CONSTRAINTS
@@ -15,134 +17,92 @@ This document defines:
 
 ---
 
-# TECHNOLOGY STACK
+# TECHNOLOGY STACK (IMPLEMENTED)
 
 ## Frontend Framework
 
-### Next.js + React
+### Next.js + React (IMPLEMENTED)
 
-**Version**: Next.js 14+ (App Router or Pages Router)
+**Version**: Next.js 14 with App Router
 
-**Choice Rationale**:
-- ✅ Server-side rendering for better SEO (product pages)
-- ✅ Static site generation for category pages
-- ✅ API routes for mock APIs (Phase 1)
-- ✅ Built-in image optimization
+**Implementation Details**:
+- ✅ App Router (Next.js 13+ style) - chosen for modern patterns
+- ✅ Server-side rendering for SEO
+- ✅ API routes for mock APIs (`/api/*`)
+- ✅ Built-in image optimization via `next/image`
 - ✅ File-based routing
-- ✅ Excellent performance out-of-box
+- React Version: 18+
 
-**Router Recommendation**: 
-- **App Router** (Next.js 13+): Modern, better for new projects
-- **Pages Router**: More mature, extensive documentation
-- **Agent's Choice**: Based on familiarity and project needs
-
-**React Version**: 18+
+**Router Decision**: App Router selected for:
+- Server Components by default
+- Improved data fetching patterns
+- Better TypeScript support
+- Nested layouts support
 
 ---
 
 ## Language
 
-### TypeScript (Recommended) or JavaScript
+### TypeScript (IMPLEMENTED)
 
-**Recommendation**: TypeScript
+**Configuration**: Strict mode enabled
 
-**Benefits**:
-- Type safety reduces bugs
-- Better IDE support and autocomplete
-- Easier refactoring
+**Benefits realized**:
+- Type safety across API responses
+- Better IDE autocomplete
 - Self-documenting code
+- Easier refactoring
 
-**If TypeScript**:
-- Use strict mode: `"strict": true` in tsconfig.json
-- Define interfaces for API responses
-- Type all props and state
-
-**If JavaScript**:
-- Use JSDoc comments for type hints
-- PropTypes for component validation
+**Types Location**: `store/src/types/index.ts`
+- All interfaces for API responses
+- Product, Category, Brand, User, Banner types defined
 
 ---
 
 ## Styling Solution
 
-### Tailwind CSS (Recommended)
+### Tailwind CSS v4 (IMPLEMENTED)
 
-**Version**: Tailwind CSS 3+
+**Version**: Tailwind CSS 4 (CSS-first configuration)
 
-**Benefits**:
-- ✅ Utility-first approach (fast development)
-- ✅ Consistent design system
-- ✅ Purges unused CSS (small bundle)
-- ✅ Responsive design built-in
-- ✅ Works well with component libraries
+**Implementation Details**:
+- ✅ CSS-first configuration in `globals.css`
+- ✅ All colors defined as CSS custom properties
+- ✅ HSL format for shadcn/ui compatibility
+- ✅ Utility-first approach
+- ✅ Automatic CSS purging
 
-**Configuration**:
-```javascript
-// tailwind.config.js
-module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './app/**/*.{js,ts,jsx,tsx}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        primary: {
-          DEFAULT: '#2563EB',
-          hover: '#1D4ED8',
-          light: '#DBEAFE',
-        },
-        secondary: {
-          DEFAULT: '#F97316',
-          hover: '#EA580C',
-          light: '#FFEDD5',
-        },
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-      },
-    },
-  },
-  plugins: [],
+**Configuration** (CSS-first approach in globals.css):
+```css
+@theme {
+  --color-primary: oklch(0.47 0.13 180);
+  --color-accent: oklch(0.75 0.18 70);
+  /* All colors as CSS variables */
 }
 ```
 
-**Alternative**: CSS Modules or styled-components (agent's choice if strong preference)
+**Note**: Tailwind v4 uses CSS-first configuration instead of `tailwind.config.js`
 
 ---
 
 ## UI Component Library
 
-### shadcn/ui (Primary Recommendation)
+### shadcn/ui (IMPLEMENTED)
 
-**Why shadcn/ui**:
+**Why shadcn/ui was chosen**:
 - ✅ Tailwind-based (consistent styling)
-- ✅ Copy components into project (no dependency)
+- ✅ Copy components into project (owns the code)
 - ✅ Highly customizable
 - ✅ Excellent accessibility
 - ✅ TypeScript support
-- ✅ Modern, clean design
 
-**Installation**:
-```bash
-npx shadcn-ui@latest init
-```
-
-**Components to Install** (as needed):
-- Button, Input, Select, Textarea, Checkbox
-- Card, Badge, Avatar
-- Dialog (Modal), Sheet (Drawer)
-- Dropdown Menu, Accordion
-- Toast (notifications)
-- Carousel (for banners, related products)
-
-**Alternative Libraries** (if agent prefers):
-- **Chakra UI**: Easy to use, good defaults
-- **Ant Design**: Excellent for admin panels (complex tables/forms)
-- **Material-UI**: Comprehensive, Google design language
-
-**Recommendation**: Use shadcn/ui for both user and admin interfaces
+**Components Installed** (`store/src/components/ui/`):
+- button, input, card, badge, avatar
+- dialog, sheet (for mobile nav)
+- dropdown-menu, accordion
+- sonner (toast notifications)
+- carousel (for banners)
+- skeleton, separator, label, textarea, select, checkbox
 
 ---
 
@@ -333,18 +293,29 @@ npm install embla-carousel-react
 
 **Storage Options**:
 
-**Option 1: httpOnly Cookies** (Recommended for Security)
+> **Implementation Note (Phase 1)**: Using localStorage for simplicity with mock APIs.
+> Will migrate to httpOnly cookies for production.
+
+**Option 1: localStorage** ✅ (Current Implementation)
+- ✅ Easy to implement
+- ✅ Works with static hosting
+- ✅ Simple for mock API phase
+- ❌ Vulnerable to XSS attacks in production
+- **Mitigation**: Sanitize all user inputs, use CSP headers
+
+**Option 2: httpOnly Cookies** (Recommended for Production)
 - ✅ Cannot be accessed by JavaScript (XSS protection)
 - ✅ Automatically sent with requests
 - ❌ Requires backend cookie handling
 
-**Option 2: localStorage**
-- ✅ Easy to implement
-- ✅ Works with static hosting
-- ❌ Vulnerable to XSS attacks
-- **Mitigation**: Sanitize all user inputs, use CSP headers
+**Current Implementation**:
+```typescript
+// Token stored in localStorage
+localStorage.setItem('token', response.token);
 
-**Recommendation**: httpOnly cookies if possible, localStorage with precautions
+// Retrieved via AuthContext
+const token = localStorage.getItem('token');
+```
 
 **Token Structure**:
 ```json
@@ -499,8 +470,27 @@ const AdminDashboard = dynamic(() => import('@/components/AdminDashboard'), {
 
 ### 3. Font Optimization
 
-**Use Next.js Font Optimization**:
+> **Implementation Note (Phase 1)**: Using system font stack instead of Google Fonts (Inter).
+> This eliminates external font requests entirely and improves performance.
+
+**Current Implementation**:
+```css
+/* In globals.css */
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
+               "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+```
+
+**Benefits**:
+- No external font requests
+- Zero layout shift (FOUT/FOIT eliminated)
+- Faster initial load
+- Native look on all platforms
+
+**Future Option - Using Next.js Font Optimization**:
 ```typescript
+// If Google Fonts are needed in future:
 import { Inter } from 'next/font/google';
 
 const inter = Inter({ 
@@ -508,20 +498,7 @@ const inter = Inter({
   display: 'swap',
   variable: '--font-inter'
 });
-
-export default function RootLayout({ children }) {
-  return (
-    <html className={inter.variable}>
-      <body>{children}</body>
-    </html>
-  );
-}
 ```
-
-**Benefits**:
-- Automatic font subsetting
-- Self-hosted fonts (no external requests)
-- Zero layout shift
 
 ---
 
